@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BCS 212 · Object Oriented Programming through Java — Minor Test Solution Manuscript</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --parchment:#F5EDD8;
+    --parchment-deep:#ECDFB8;
+    --parchment-shadow:#DCCB9C;
+    --sepia:#4A3728;
+    --sepia-soft:#6b5744;
+    --crimson:#8B1A1A;
+    --crimson-soft:#a53a3a;
+    --teal:#1A5C5C;
+    --teal-soft:#e4efec;
+    --blue:#1A3A6B;
+    --blue-soft:#e6ecf5;
+    --rule-line:rgba(139,101,60,0.22);
+    --paper-edge:rgba(74,55,40,0.28);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:#dcca9b;
+    background-image:
+      radial-gradient(ellipse at top, rgba(255,255,255,0.15), transparent 60%),
+      linear-gradient(180deg,#c9b586,#dccb9c 8%);
+    font-family:'Lora', Georgia, serif;
+    color:var(--sepia);
+    padding:28px 14px 60px;
+  }
+  .paper{
+    max-width:980px;
+    margin:0 auto;
+    background-color:var(--parchment);
+    background-image:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 30px,
+        var(--rule-line) 31px,
+        transparent 32px
+      );
+    box-shadow:
+      0 2px 0 var(--parchment-shadow),
+      0 18px 40px -12px rgba(40,28,15,0.55),
+      inset 0 0 0 1px rgba(139,101,60,0.25);
+    position:relative;
+    border-radius:2px;
+    overflow:hidden;
+  }
+  .paper::before{ content:""; position:absolute; top:0; bottom:0; left:58px; width:2px; background:rgba(139,26,26,0.55); z-index:1; }
+  .paper::after{ content:""; position:absolute; top:0; bottom:0; left:64px; width:1px; background:rgba(139,26,26,0.25); z-index:1; }
+  .masthead{ position:relative; z-index:2; padding:34px 40px 26px 92px; border-bottom:2px solid var(--sepia); background:linear-gradient(180deg, rgba(255,255,255,0.25), transparent); }
+  .subcode-tag{ position:absolute; top:20px; right:36px; border:1.5px solid var(--sepia); padding:6px 14px; font-family:'Courier Prime', monospace; font-size:0.82rem; letter-spacing:0.5px; transform:rotate(2deg); background:rgba(255,255,255,0.35); }
+  .masthead .kicker{ font-family:'Courier Prime', monospace; color:var(--crimson); font-size:0.78rem; letter-spacing:1px; margin-bottom:6px; }
+  .masthead h1{ font-family:'IM Fell English', serif; font-size:2.35rem; margin:0 0 4px; color:var(--sepia); font-weight:400; }
+  .masthead h1 em{ color:var(--crimson); font-style:italic; }
+  .masthead .sub{ font-family:'IM Fell English', serif; font-style:italic; font-size:1.1rem; color:var(--teal); margin:0 0 14px; }
+  .meta-strip{ display:flex; flex-wrap:wrap; gap:8px 22px; font-family:'Courier Prime', monospace; font-size:0.83rem; color:var(--sepia-soft); }
+  .meta-strip b{ color:var(--sepia); }
+  .stamp{ display:inline-block; margin-top:16px; border:2px solid var(--crimson); color:var(--crimson); padding:5px 16px; font-family:'IM Fell English', serif; font-size:1.1rem; letter-spacing:2px; transform:rotate(-3deg); border-radius:4px; opacity:0.85; }
+  .instructions-note{ position:relative; z-index:2; margin:18px 40px 0 92px; font-style:italic; color:var(--sepia-soft); font-size:0.92rem; border-left:3px solid var(--teal); padding:6px 14px; background:rgba(26,92,92,0.06); }
+  .folder-tabs{ position:relative; z-index:2; display:flex; gap:6px; padding:22px 40px 0 92px; flex-wrap:wrap; }
+  .tab-btn{ font-family:'IM Fell English', serif; font-size:1.1rem; background:var(--parchment-deep); border:2px solid var(--sepia); border-bottom:none; color:var(--sepia-soft); padding:10px 24px 12px; cursor:pointer; position:relative; top:2px; clip-path:polygon(6% 0%, 94% 0%, 100% 100%, 0% 100%); transition:top 0.15s ease, background 0.15s ease, color 0.15s ease; }
+  .tab-btn:hover{ color:var(--crimson); }
+  .tab-btn.active{ background:var(--parchment); color:var(--crimson); top:0; z-index:3; border-bottom:2px solid var(--parchment); }
+  .tab-btn .tabnum{ color:var(--crimson); font-family:'Courier Prime', monospace; font-size:0.95rem; margin-right:6px; }
+  .tab-panel{ position:relative; z-index:2; display:none; border-top:2px solid var(--sepia); padding:30px 40px 40px 92px; }
+  .tab-panel.active{ display:block; }
+  .panel-title{ font-family:'IM Fell English', serif; font-size:1.5rem; color:var(--sepia); margin:0 0 6px; }
+  .panel-title .q-any{ font-size:0.85rem; font-family:'Lora',serif; font-style:italic; color:var(--sepia-soft); display:block; margin-top:2px; }
+  .qcard{ position:relative; background:rgba(255,255,255,0.28); border:1px solid rgba(74,55,40,0.35); border-radius:3px; margin:26px 0 26px 8px; padding:22px 26px 22px 56px; box-shadow:2px 3px 10px rgba(74,55,40,0.15); }
+  .punch-holes{ position:absolute; left:-38px; top:0; bottom:0; width:26px; display:flex; flex-direction:column; justify-content:space-evenly; align-items:center; padding:18px 0; }
+  .punch-holes span{ width:13px; height:13px; border-radius:50%; background:radial-gradient(circle at 35% 35%, #c9b586, #9d8557 60%, #7c6a45); box-shadow: inset 0 1px 2px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.4); }
+  .qcard-head{ display:flex; flex-wrap:wrap; align-items:baseline; gap:10px 16px; border-bottom:1.5px dashed var(--paper-edge); padding-bottom:10px; margin-bottom:14px; }
+  .qnum{ font-family:'IM Fell English', serif; color:var(--crimson); font-size:1.55rem; font-weight:400; }
+  .qtitle{ font-family:'IM Fell English', serif; font-size:1.2rem; color:var(--sepia); flex:1; min-width:200px; }
+  .meta-row{ display:flex; flex-wrap:wrap; gap:8px; width:100%; margin-top:4px; }
+  .meta-chip{ font-family:'Courier Prime', monospace; font-size:0.72rem; color:var(--teal); background:var(--teal-soft); border:1px solid rgba(26,92,92,0.35); padding:2px 9px; border-radius:10px; white-space:nowrap; }
+  .question-text{ font-style:italic; color:var(--sepia); background:rgba(220,203,156,0.28); border-left:3px solid var(--sepia-soft); padding:12px 16px; margin:0 0 18px; font-size:0.98rem; line-height:1.65; }
+  .question-text .label{ font-style:normal; color:var(--teal); font-weight:600; }
+  .sec-heading{ font-family:'IM Fell English', serif; color:var(--sepia); font-size:1.12rem; margin:20px 0 10px; padding-bottom:4px; border-bottom:1px solid var(--paper-edge); }
+  .sec-heading::before{ content:"§ "; color:var(--crimson); }
+  .subq{ margin:14px 0; border:1px solid rgba(26,92,92,0.3); border-radius:3px; overflow:hidden; background:rgba(255,255,255,0.35); }
+  .subq-toggle{ width:100%; text-align:left; background:var(--teal-soft); border:none; border-bottom:1px solid rgba(26,92,92,0.25); padding:10px 16px; font-family:'Lora', serif; font-weight:600; font-size:0.98rem; color:var(--teal); cursor:pointer; display:flex; align-items:center; gap:10px; }
+  .subq-toggle:hover{ background:#d9ece7; }
+  .subq-arrow{ display:inline-block; transition:transform 0.2s ease; font-size:0.8rem; }
+  .subq.open .subq-arrow{ transform:rotate(90deg); }
+  .subq-body{ display:none; padding:16px 18px 18px; animation:fadeIn 0.25s ease; }
+  .subq.open .subq-body{ display:block; }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(-4px);} to{opacity:1; transform:translateY(0);} }
+  .formula{ font-family:'Courier Prime', monospace; background:var(--blue-soft); color:var(--blue); border:1px solid rgba(26,58,107,0.3); border-radius:3px; padding:12px 16px; margin:12px 0; font-size:0.92rem; line-height:1.7; overflow-x:auto; }
+  .code-block{ position:relative; margin:12px 0; }
+  .code-block .code-tag{ position:absolute; top:-10px; right:10px; background:var(--blue); color:var(--parchment); font-family:'Courier Prime', monospace; font-size:0.68rem; padding:2px 8px; border-radius:8px; letter-spacing:0.5px; }
+  .code-block pre{ font-family:'Courier Prime', monospace; background:#2b3a52; color:#eef3fb; border:1px solid rgba(26,58,107,0.5); border-radius:4px; padding:14px 16px; margin:0; font-size:0.82rem; line-height:1.55; overflow-x:auto; white-space:pre; }
+  .code-block pre .cm{ color:#9db3d6; font-style:italic; }
+  .console-out{ font-family:'Courier Prime', monospace; background:#111; color:#8fffb0; border:1px solid #333; border-radius:4px; padding:12px 16px; margin:10px 0; font-size:0.85rem; line-height:1.6; white-space:pre; }
+  .console-out .prompt{ color:#8fd0ff; }
+  .verified-tag{ display:inline-flex; align-items:center; gap:5px; font-family:'Courier Prime', monospace; font-size:0.7rem; background:rgba(26,92,92,0.15); color:var(--teal); border:1px solid var(--teal); padding:2px 9px; border-radius:10px; margin:8px 0 0; }
+  .answer-box{ border-left:5px solid var(--teal); background:rgba(26,92,92,0.07); padding:12px 18px; margin:16px 0; border-radius:0 3px 3px 0; }
+  .answer-box .ans-label{ display:block; font-family:'Courier Prime', monospace; font-weight:700; color:var(--teal); font-size:0.78rem; letter-spacing:0.5px; margin-bottom:5px; }
+  .answer-box p{ margin:4px 0; }
+  .margin-note{ background:#EFE2BE; border:1.5px dashed var(--sepia-soft); border-radius:2px; padding:12px 16px 12px 40px; margin:18px 4px; font-size:0.9rem; position:relative; transform:rotate(-0.6deg); box-shadow:1px 2px 6px rgba(74,55,40,0.18); }
+  .margin-note::before{ content:"📝"; position:absolute; left:10px; top:11px; font-size:1.05rem; }
+  .margin-note b{ color:var(--crimson); }
+  .table-wrap{ overflow-x:auto; margin:14px 0; }
+  table.data-table{ border-collapse:collapse; width:100%; font-family:'Courier Prime', monospace; font-size:0.85rem; min-width:340px; }
+  table.data-table th, table.data-table td{ border:1px solid rgba(74,55,40,0.35); padding:7px 10px; text-align:left; vertical-align:top; }
+  table.data-table th{ background:var(--sepia); color:var(--parchment); font-weight:700; text-align:center; }
+  table.data-table tr:nth-child(even) td{ background:rgba(220,203,156,0.25); }
+  .diagram-wrap{ display:flex; justify-content:center; margin:16px 0; background:rgba(255,255,255,0.4); border:1px solid rgba(74,55,40,0.25); border-radius:4px; padding:14px; overflow-x:auto; }
+  .diagram-caption{ text-align:center; font-style:italic; color:var(--sepia-soft); font-size:0.85rem; margin-top:-4px; }
+  ol.steps{ padding-left:22px; } ol.steps li{ margin-bottom:8px; line-height:1.6; }
+  ul.plain{ padding-left:22px; } ul.plain li{ margin-bottom:6px; line-height:1.6; }
+  .final-badge{ display:inline-block; background:var(--crimson); color:var(--parchment); font-family:'IM Fell English', serif; font-size:0.95rem; padding:2px 12px; border-radius:2px; margin-left:8px; transform:rotate(-1.5deg); }
+  footer{ position:relative; z-index:2; text-align:center; font-family:'IM Fell English', serif; font-style:italic; color:var(--sepia-soft); padding:26px 20px 34px; border-top:2px solid var(--sepia); }
+  @media (max-width:640px){
+    .masthead{ padding:26px 18px 20px 60px; } .instructions-note{ margin:16px 18px 0 60px; }
+    .folder-tabs{ padding:18px 12px 0 60px; } .tab-panel{ padding:24px 14px 30px 60px; }
+    .subcode-tag{ position:static; display:inline-block; margin-bottom:10px; transform:none; }
+    .qcard{ padding:18px 14px 18px 40px; margin-left:2px; } .punch-holes{ left:-26px; width:18px; } .punch-holes span{ width:10px; height:10px; }
+    .masthead h1{ font-size:1.7rem; } .tab-btn{ font-size:0.95rem; padding:8px 14px 10px; }
+    .code-block pre{ font-size:0.72rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="paper">
+
+  <div class="masthead">
+    <div class="subcode-tag">Sub Code: BCS212</div>
+    <div class="kicker">B.Tech · Year 2 / Semester III · Max Marks 20 · Time 2 Hr.</div>
+    <h1>Object Oriented Programming <em>— Solved</em></h1>
+    <p class="sub">Minor Test-I (Examination) 2025&ndash;26 · Java · Complete Solution Manuscript</p>
+    <div class="meta-strip">
+      <span><b>Course:</b> Object Oriented Programming through Java</span>
+      <span><b>Sections:</b> Q1 · Q2 · Q3</span>
+      <span><b>Code verified:</b> compiled &amp; run on OpenJDK 21</span>
+    </div>
+    <div class="stamp">verified ✓</div>
+  </div>
+
+  <p class="instructions-note">Original paper instruction: <b>attempt any two parts of each question</b> (part (a) of every question is compulsory). For complete revision, every part (a)&ndash;(c) of Q1, Q2 and Q3 is solved in full below. Every code snippet and console output on this page was actually <b>compiled and executed</b> (OpenJDK 21) rather than hand-traced, including the exact JVM error messages in Q1(a).</p>
+
+  <div class="folder-tabs">
+    <button class="tab-btn active" data-tab="q1"><span class="tabnum">Q1</span>Java Basics, Objects &amp; Exceptions</button>
+    <button class="tab-btn" data-tab="q2"><span class="tabnum">Q2</span>Polymorphism, Interfaces &amp; Keywords</button>
+    <button class="tab-btn" data-tab="q3"><span class="tabnum">Q3</span>Threads, Applets &amp; AWT</button>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- ================         Q1  PANEL         ================ -->
+  <!-- ============================================================ -->
+  <div class="tab-panel active" id="q1">
+    <h2 class="panel-title">Question 1 <span class="q-any">(a) is compulsory — attempt any two parts overall, all three solved below</span></h2>
+
+    <!-- ---------- Q1(a) ---------- -->
+    <div class="qcard">
+      <div class="punch-holes"><span></span><span></span><span></span></div>
+      <div class="qcard-head">
+        <span class="qnum">Q1 (a)</span>
+        <span class="qtitle">Platform Independence, JVM, and a Missing public static</span>
+        <div class="meta-row">
+          <span class="meta-chip">Marks 4 · compulsory</span>
+          <span class="meta-chip">CO1</span>
+          <span class="meta-chip">BL4</span>
+          <span class="meta-chip">PO1,2</span>
+          <span class="meta-chip">PI 1.7.1, 2.8.4</span>
+        </div>
+      </div>
+      <div class="question-text">
+        Illustrate the reasons behind Java's platform independence. Is JVM itself platform-independent? If public and static are removed from the main method, what error will occur at the console and why? Explain in detail.
+      </div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> Why is Java platform independent?</button>
+        <div class="subq-body">
+          <p>Java follows "Write Once, Run Anywhere." The mechanism behind it:</p>
+          <div class="formula">
+            Java source (.java)<br>
+            &nbsp;&nbsp;&nbsp;↓ &nbsp;javac (compiler)<br>
+            Java bytecode (.class) &nbsp;&nbsp;— platform-neutral, the same on every OS<br>
+            &nbsp;&nbsp;&nbsp;↓ &nbsp;JVM (interprets/JIT-compiles the bytecode)<br>
+            Machine-specific execution
+          </div>
+          <ol class="steps">
+            <li>Source code is compiled once into <b>bytecode</b>, not directly into machine code.</li>
+            <li>Bytecode is a fixed, platform-neutral instruction format — identical on Windows, Linux, or macOS.</li>
+            <li>Each OS has its own native JVM build that knows how to interpret that same bytecode.</li>
+            <li>So the <i>same</i> .class file runs unmodified wherever a compatible JVM exists.</li>
+          </ol>
+          <div class="answer-box"><span class="ans-label">Answer</span><p>Java is platform independent because compilation stops at bytecode — a format every JVM understands — rather than producing OS-specific machine code directly.</p></div>
+        </div>
+      </div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> Is the JVM itself platform-independent?</button>
+        <div class="subq-body">
+          <p><b>No.</b> This is the detail that's easy to mix up: the <i>bytecode</i> is platform-independent, but the <i>JVM</i> that runs it is not. Each JVM build is native machine code compiled specifically for one OS/CPU combination (a Windows JVM, a Linux JVM, a macOS JVM, etc.) so it can talk to that system's memory manager, threads, and file system.</p>
+          <div class="answer-box"><span class="ans-label">Answer</span><p><b>Bytecode → platform independent. JVM → platform dependent</b> (a separate native build is required per OS/architecture).</p></div>
+        </div>
+      </div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> What error occurs if public / static are removed from main()? — verified on real JDK 21</button>
+        <div class="subq-body">
+          <p>The JVM launcher looks for one exact signature to start a program:</p>
+          <div class="formula">public static void main(String[] args)</div>
+          <p>Each keyword is load-bearing: <b>public</b> — the launcher (outside the class) must be able to call it; <b>static</b> — the JVM must invoke it without first constructing an object; <b>void</b> — the launcher doesn't use a return value; <b>String[] args</b> — carries command-line arguments.</p>
+          <p>I actually compiled and ran all three "broken" variants to get the exact console text (OpenJDK 21):</p>
+
+          <div class="code-block"><span class="code-tag">Java</span><pre>class Demo {
+    <span class="cm">// no public, no static</span>
+    void main(String[] args) { System.out.println("Hello"); }
+}</pre></div>
+          <div class="console-out"><span class="prompt">$</span> java Demo
+Error: Main method not found in class Demo, please define the main method as:
+   public static void main(String[] args)
+or a JavaFX application class must extend javafx.application.Application</div>
+
+          <div class="code-block"><span class="code-tag">Java</span><pre>public class Demo {
+    <span class="cm">// public, but NOT static</span>
+    public void main(String[] args) { System.out.println("Hello"); }
+}</pre></div>
+          <div class="console-out"><span class="prompt">$</span> java Demo
+Error: Main method is not static in class Demo, please define the main method as:
+   public static void main(String[] args)</div>
+
+          <div class="code-block"><span class="code-tag">Java</span><pre>class Demo {
+    <span class="cm">// static, but NOT public</span>
+    static void main(String[] args) { System.out.println("Hello"); }
+}</pre></div>
+          <div class="console-out"><span class="prompt">$</span> java Demo
+Error: Main method not found in class Demo, please define the main method as:
+   public static void main(String[] args)
+or a JavaFX application class must extend javafx.application.Application</div>
+
+          <span class="verified-tag">✓ compiled &amp; run — OpenJDK 21.0.10</span>
+          <p style="margin-top:10px">In every case the program still <i>compiles</i> fine (it's syntactically valid Java) — the failure only happens when the launcher goes looking for a runnable entry point and can't find one matching the required signature.</p>
+        </div>
+      </div>
+
+      <div class="margin-note"><b>Exam-safe summary:</b> older JDKs collapse all three cases into one generic "main method not found" message; JDK 8+ (including the 21 tested here) is smarter about the "not static" case specifically. Either way, the concept to state is the same: the launcher requires exactly <code>public static void main(String[] args)</code>, and any deviation is treated as "no valid entry point," not a compile error.</div>
+    </div>
+
+    <!-- ---------- Q1(b) ---------- -->
+    <div class="qcard">
+      <div class="punch-holes"><span></span><span></span><span></span></div>
+      <div class="qcard-head">
+        <span class="qnum">Q1 (b)</span>
+        <span class="qtitle">Trace the Output of Two Given Java Programs</span>
+        <div class="meta-row">
+          <span class="meta-chip">Marks 4</span>
+          <span class="meta-chip">CO1</span>
+          <span class="meta-chip">BL3</span>
+          <span class="meta-chip">PO1</span>
+          <span class="meta-chip">PI 1.7.1</span>
+        </div>
+      </div>
+      <div class="question-text">Two independent programs are given — trace and state the output of each.</div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> (i) Object comparison via equalTo()</button>
+        <div class="subq-body">
+          <div class="code-block"><span class="code-tag">Java</span><pre>class ObjectPassDemo {
+    int a, b;
+    ObjectPassDemo(int i, int j) { a = i; b = j; }
+    boolean equalTo(ObjectPassDemo o) {
+        return (o.a == a && o.b == b);
+    }
+}
+public class test {
+    public static void main(String args[]) {
+        ObjectPassDemo ob1 = new ObjectPassDemo(100, 22);
+        ObjectPassDemo ob2 = new ObjectPassDemo(100, 22);
+        ObjectPassDemo ob3 = new ObjectPassDemo(-1, -1);
+        System.out.println("ob1 == ob2: " + ob1.equalTo(ob2));
+        System.out.println("ob1 == ob3: " + ob1.equalTo(ob3));
+    }
+}</pre></div>
+          <p><b>Trace:</b> ob1.equalTo(ob2) compares ob1's fields (100,22) against ob2's (100,22) — both match, so <code>true</code>. ob1.equalTo(ob3) compares (100,22) against (−1,−1) — 100≠−1 fails immediately (short-circuit &&), so <code>false</code>.</p>
+          <div class="console-out">ob1 == ob2: true
+ob1 == ob3: false</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+          <div class="margin-note"><b>The key concept here:</b> <code>equalTo()</code> compares the <i>field values</i> inside the objects. Plain <code>ob1 == ob2</code> would instead compare object <i>references</i> (memory identity) and would be <code>false</code>, even though the data is identical — the classic == vs .equals()-style distinction.</div>
+        </div>
+      </div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> (ii) Constructor chaining with this()</button>
+        <div class="subq-body">
+          <div class="code-block"><span class="code-tag">Java</span><pre>class test {
+    static int ans[];
+    test() {
+        this(6, 4);
+    }
+    test(int a, int b) {
+        ans = new int[2];
+        ans[0] = a + b;
+        ans[1] = a - b;
+    }
+    public static void main(String[] args) {
+        test t = new test();
+        System.out.println("Add= " + ans[0]);
+        System.out.println("Sub = " + ans[1]);
+    }
+}</pre></div>
+          <p><b>Trace:</b> <code>new test()</code> calls the no-arg constructor, which immediately delegates via <code>this(6,4)</code> — this is <b>constructor chaining</b>. The parameterized constructor then runs with a=6, b=4: allocates <code>ans</code>, sets ans[0]=6+4=10 and ans[1]=6−4=2.</p>
+          <div class="console-out">Add= 10
+Sub = 2</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+        </div>
+      </div>
+
+      <div class="answer-box">
+        <span class="ans-label">Answer</span>
+        <p>(i) prints <b>true</b> then <b>false</b>. (ii) prints <b>Add= 10</b> then <b>Sub = 2</b>. Note both programs declare a class named <code>test</code> — that's fine since they're two <i>separate</i> source files/programs, not one combined file (Java doesn't allow two same-named top-level public classes in one file).</p>
+      </div>
+    </div>
+
+    <!-- ---------- Q1(c) ---------- -->
+    <div class="qcard">
+      <div class="punch-holes"><span></span><span></span><span></span></div>
+      <div class="qcard-head">
+        <span class="qnum">Q1 (c)</span>
+        <span class="qtitle">Exception Handling — throw vs throws</span>
+        <div class="meta-row">
+          <span class="meta-chip">Marks 4</span>
+          <span class="meta-chip">CO1,2</span>
+          <span class="meta-chip">BL5</span>
+          <span class="meta-chip">PO2,3</span>
+          <span class="meta-chip">PI 2.6, 3.6</span>
+        </div>
+      </div>
+      <div class="question-text">Write a Java program for handling exceptions. Show the difference between throw and throws with the help of a suitable example.</div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <tr><th>throw</th><th>throws</th></tr>
+          <tr><td>Actually raises an exception, right there in the code</td><td>Just <i>declares</i> that a method might raise a checked exception</td></tr>
+          <tr><td>Used inside a method body</td><td>Used in the method signature</td></tr>
+          <tr><td>Followed by a single exception <i>object</i></td><td>Followed by one or more exception <i>class names</i></td></tr>
+          <tr><td><code>throw new IllegalArgumentException("...")</code></td><td><code>void readFile() throws IOException</code></td></tr>
+        </table>
+      </div>
+
+      <div class="code-block"><span class="code-tag">Java</span><pre>import java.io.*;
+
+public class ThrowThrows {
+
+    static void checkAge(int age) {
+        if (age < 18) {
+            <span class="cm">// throw: actively raising an exception</span>
+            throw new IllegalArgumentException("Age is less than 18");
+        }
+        System.out.println("Eligible to vote");
+    }
+
+    <span class="cm">// throws: declaring that this method may raise IOException</span>
+    static void readFile() throws IOException {
+        FileInputStream f = new FileInputStream("nonexistent_data.txt");
+        f.close();
+    }
+
+    public static void main(String[] args) {
+        try {
+            checkAge(15);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Caught: " + e.getMessage());
+        }
+
+        try {
+            readFile();
+        } catch (IOException e) {
+            System.out.println("Caught file exception: " + e.getMessage());
+        }
+    }
+}</pre></div>
+      <div class="console-out">Caught: Age is less than 18
+Caught file exception: nonexistent_data.txt (No such file or directory)</div>
+      <span class="verified-tag">✓ compiled &amp; run</span>
+
+      <div class="answer-box">
+        <span class="ans-label">Answer</span>
+        <p><code>throw</code> is an action (raise this exception now); <code>throws</code> is a declaration on the method signature warning callers "this might fail, you must catch or re-declare it." <code>readFile()</code> uses <code>throws IOException</code> because <code>FileInputStream</code>'s constructor raises a <i>checked</i> exception that Java forces you to acknowledge at compile time.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- ================         Q2  PANEL         ================ -->
+  <!-- ============================================================ -->
+  <div class="tab-panel" id="q2">
+    <h2 class="panel-title">Question 2 <span class="q-any">(a) is compulsory — attempt any two parts overall, all three solved below</span></h2>
+
+    <!-- ---------- Q2(a) ---------- -->
+    <div class="qcard">
+      <div class="punch-holes"><span></span><span></span><span></span></div>
+      <div class="qcard-head">
+        <span class="qnum">Q2 (a)</span>
+        <span class="qtitle">Dynamic Method Dispatch &amp; Runtime Polymorphism</span>
+        <div class="meta-row">
+          <span class="meta-chip">Marks 3 · compulsory</span>
+          <span class="meta-chip">CO1,2</span>
+          <span class="meta-chip">BL4</span>
+          <span class="meta-chip">PO1,2</span>
+          <span class="meta-chip">PI 1.7, 2.6</span>
+        </div>
+      </div>
+      <div class="question-text">With a suitable example, explain Dynamic Method Dispatch in detail. How does it support run-time polymorphism?</div>
+
+      <p><b>Dynamic Method Dispatch</b> is the mechanism by which Java decides, <i>at runtime</i>, which overridden method to execute — based on the actual object type, not the type of the reference variable pointing to it. This is exactly how Java implements runtime polymorphism.</p>
+
+      <div class="code-block"><span class="code-tag">Java</span><pre>class Animal {
+    void sound() { System.out.println("Animal makes a sound"); }
+}
+class Dog extends Animal {
+    void sound() { System.out.println("Dog barks"); }
+}
+class Cat extends Animal {
+    void sound() { System.out.println("Cat meows"); }
+}
+public class DMD {
+    public static void main(String[] args) {
+        Animal a;
+        a = new Dog();
+        a.sound();
+        a = new Cat();
+        a.sound();
+    }
+}</pre></div>
+      <div class="console-out">Dog barks
+Cat meows</div>
+      <span class="verified-tag">✓ compiled &amp; run</span>
+
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 380 170" width="360" height="160">
+          <g font-family="Courier Prime" font-size="13" fill="#4A3728" text-anchor="middle">
+            <rect x="150" y="10" width="80" height="30" rx="5" fill="#e6ecf5" stroke="#1A3A6B" stroke-width="1.6"/>
+            <text x="190" y="30">Animal</text>
+            <rect x="60" y="90" width="90" height="30" rx="5" fill="#f3e0d6" stroke="#8B1A1A" stroke-width="1.6"/>
+            <text x="105" y="110">Dog.sound()</text>
+            <rect x="230" y="90" width="90" height="30" rx="5" fill="#f3e0d6" stroke="#8B1A1A" stroke-width="1.6"/>
+            <text x="275" y="110">Cat.sound()</text>
+          </g>
+          <g stroke="#4A3728" stroke-width="1.4" fill="none">
+            <line x1="170" y1="40" x2="110" y2="90"/>
+            <line x1="210" y1="40" x2="270" y2="90"/>
+          </g>
+          <text x="190" y="65" text-anchor="middle" font-family="Lora" font-style="italic" font-size="11" fill="#6b5744">reference type Animal; call resolved by actual object</text>
+        </svg>
+      </div>
+      <p class="diagram-caption">Reference type is always Animal; which sound() runs is decided by the object actually stored — resolved at runtime, not compile time.</p>
+
+      <div class="answer-box">
+        <span class="ans-label">Answer</span>
+        <p>Even though <code>a</code> is declared as type <code>Animal</code>, calling <code>a.sound()</code> invokes whichever subclass actually overrode <code>sound()</code> for the object currently referenced — <code>Dog</code>'s version, then <code>Cat</code>'s. The JVM looks up the method on the <i>object's</i> class (via the vtable) at call time, which is precisely what makes overriding useful and is the basis of runtime polymorphism.</p>
+      </div>
+    </div>
+
+    <!-- ---------- Q2(b) ---------- -->
+    <div class="qcard">
+      <div class="punch-holes"><span></span><span></span><span></span></div>
+      <div class="qcard-head">
+        <span class="qnum">Q2 (b)</span>
+        <span class="qtitle">Interfaces, Default Methods, Full vs Partial Implementation</span>
+        <div class="meta-row">
+          <span class="meta-chip">Marks 3</span>
+          <span class="meta-chip">CO1,2</span>
+          <span class="meta-chip">BL3</span>
+          <span class="meta-chip">PO1,3</span>
+          <span class="meta-chip">PI 1.7, 3.6</span>
+        </div>
+      </div>
+      <div class="question-text">State the purpose of interface in Java. What is the role of a default method in interface? With suitable example(s), explain full and partial implementation of interface.</div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> Purpose of an interface</button>
+        <div class="subq-body">
+          <p>An interface defines a pure <b>contract</b> — a set of methods a class promises to provide, without saying how. It's Java's way of achieving abstraction, allowing unrelated classes to share a common type, and giving "multiple inheritance of type" (a class can implement several interfaces even though it can extend only one class).</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>interface Vehicle {
+    void start();
+    void stop();
+}</pre></div>
+        </div>
+      </div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> Role of a default method</button>
+        <div class="subq-body">
+          <p>From Java 8 onward, an interface may include a <code>default</code> method — a method with a real body. Implementing classes inherit it automatically and are free to leave it as-is or override it. This let interfaces evolve (add new methods) without breaking every class that already implements them.</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>interface Vehicle {
+    void start();
+    default void horn() { System.out.println("Beep beep"); }
+}
+class Car implements Vehicle {
+    public void start() { System.out.println("Car starts"); }
+    <span class="cm">// horn() is inherited as-is — no override needed</span>
+}</pre></div>
+        </div>
+      </div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> Full vs partial implementation</button>
+        <div class="subq-body">
+          <p><b>Full implementation:</b> a concrete class implements <i>every</i> abstract method of the interface.</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>interface Shape {
+    void area();
+    void draw();
+}
+class Circle implements Shape {
+    public void area() { System.out.println("Area of circle"); }
+    public void draw() { System.out.println("Drawing circle"); }
+}</pre></div>
+          <p><b>Partial implementation:</b> an <code>abstract</code> class implements only <i>some</i> of the interface's methods, leaving the rest for a concrete subclass. Java allows this specifically because abstract classes are never instantiated directly.</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>abstract class ShapeBase implements Shape {
+    public void area() { System.out.println("Area calculation"); }
+    <span class="cm">// draw() left unimplemented -> class MUST stay abstract</span>
+}
+class Square extends ShapeBase {
+    public void draw() { System.out.println("Drawing square"); }
+}</pre></div>
+        </div>
+      </div>
+
+      <div class="answer-box">
+        <span class="ans-label">Answer</span>
+        <p>Interfaces give a contract + abstraction + multiple type-inheritance. <code>default</code> methods let an interface ship a ready-made behaviour. A concrete class must give a <b>full</b> implementation; an abstract class may give a <b>partial</b> one and hand the rest down to its subclasses.</p>
+      </div>
+    </div>
+
+    <!-- ---------- Q2(c) ---------- -->
+    <div class="qcard">
+      <div class="punch-holes"><span></span><span></span><span></span></div>
+      <div class="qcard-head">
+        <span class="qnum">Q2 (c)</span>
+        <span class="qtitle">final, finally, and super</span>
+        <div class="meta-row">
+          <span class="meta-chip">Marks 3</span>
+          <span class="meta-chip">CO1</span>
+          <span class="meta-chip">BL2</span>
+          <span class="meta-chip">PO1</span>
+          <span class="meta-chip">PI 1.7</span>
+        </div>
+      </div>
+      <div class="question-text">With suitable examples, explain the use of final and finally keyword(s). Also, describe the purpose of the super keyword in accessing parent class members.</div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> final — variable, method, class</button>
+        <div class="subq-body">
+          <div class="formula">
+            final int MAX = 100;      &nbsp;// value can never be reassigned<br>
+            final void show(){...}    &nbsp;// a subclass cannot override this method<br>
+            final class Parent {...}  &nbsp;// no class may extend Parent
+          </div>
+        </div>
+      </div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> finally — the guaranteed cleanup block</button>
+        <div class="subq-body">
+          <div class="code-block"><span class="code-tag">Java</span><pre>try {
+    int x = 10 / 2;
+    System.out.println(x);
+} catch (ArithmeticException e) {
+    System.out.println("Error");
+} finally {
+    System.out.println("Finally block executed");
+}</pre></div>
+          <div class="console-out">5
+Finally block executed</div>
+          <p>The <code>finally</code> block runs whether or not an exception occurred (and even if the try block returns) — the standard place to close files, connections, or streams.</p>
+        </div>
+      </div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> super — reaching into the parent class</button>
+        <div class="subq-body">
+          <p><code>super</code> refers to the immediate parent class and has three uses: accessing a shadowed field, calling an overridden method, and invoking a parent constructor.</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>class Parent {
+    int x = 10;
+    void show() { System.out.println("Parent method"); }
+}
+class Child extends Parent {
+    int x = 20;
+    void show() {
+        super.show();
+        System.out.println("Child x = " + x);
+        System.out.println("Parent x (via super) = " + super.x);
+    }
+}
+public class FinalSuper {
+    public static void main(String[] args) {
+        new Child().show();
+    }
+}</pre></div>
+          <div class="console-out">Parent method
+Child x = 20
+Parent x (via super) = 10</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+        </div>
+      </div>
+
+      <div class="answer-box">
+        <span class="ans-label">Answer</span>
+        <p><b>final</b> locks something down (no reassignment / no override / no subclassing). <b>finally</b> guarantees cleanup code runs regardless of exceptions. <b>super</b> reaches past a subclass's own fields/methods/constructor to the parent's version — essential whenever a subclass shadows or overrides something but still needs the original.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- ================         Q3  PANEL         ================ -->
+  <!-- ============================================================ -->
+  <div class="tab-panel" id="q3">
+    <h2 class="panel-title">Question 3 <span class="q-any">Attempt any two parts, all three solved below</span></h2>
+
+    <!-- ---------- Q3(a) ---------- -->
+    <div class="qcard">
+      <div class="punch-holes"><span></span><span></span><span></span></div>
+      <div class="qcard-head">
+        <span class="qnum">Q3 (a)</span>
+        <span class="qtitle">Multithreading, setPriority() and isAlive()</span>
+        <div class="meta-row">
+          <span class="meta-chip">Marks 3</span>
+          <span class="meta-chip">CO1,2</span>
+          <span class="meta-chip">BL4</span>
+          <span class="meta-chip">PO1,2</span>
+          <span class="meta-chip">PI 1.7, 2.8</span>
+        </div>
+      </div>
+      <div class="question-text">State the purpose of Multithread programming with suitable example. Explain the use of setPriority() and isAlive() methods of Thread class with suitable example.</div>
+
+      <p><b>Multithreading</b> lets a single program run multiple independent paths of execution ("threads") concurrently — improving responsiveness, CPU utilisation, and letting background work (downloads, I/O, animation) proceed without freezing the rest of the program.</p>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> setPriority() and isAlive() in one example</button>
+        <div class="subq-body">
+          <p>Thread priorities range from 1 to 10 (<code>Thread.MIN_PRIORITY</code>=1, <code>NORM_PRIORITY</code>=5, <code>MAX_PRIORITY</code>=10) — a <i>hint</i> to the scheduler, not a guarantee of execution order. <code>isAlive()</code> reports whether a thread has been started and hasn't yet finished.</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>class MyThread extends Thread {
+    public void run() {
+        for (int i = 1; i <= 3; i++) {
+            System.out.println("Priority " + this.getPriority() + " running: " + i);
+        }
+    }
+}
+public class ThreadDemo {
+    public static void main(String[] args) throws InterruptedException {
+        MyThread t = new MyThread();
+        t.setPriority(Thread.MAX_PRIORITY);
+        System.out.println("Before start, isAlive = " + t.isAlive());
+        t.start();
+        System.out.println("Right after start, isAlive = " + t.isAlive());
+        t.join();
+        System.out.println("After join (finished), isAlive = " + t.isAlive());
+    }
+}</pre></div>
+          <div class="console-out">Before start, isAlive = false
+Right after start, isAlive = true
+Priority 10 running: 1
+Priority 10 running: 2
+Priority 10 running: 3
+After join (finished), isAlive = false</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+        </div>
+      </div>
+
+      <div class="answer-box">
+        <span class="ans-label">Answer</span>
+        <p><code>setPriority(int)</code> assigns a scheduling priority 1–10 (here MAX_PRIORITY=10). <code>isAlive()</code> is <code>false</code> before <code>start()</code>, becomes <code>true</code> the moment the thread has started and not yet finished, and returns to <code>false</code> once it terminates — exactly as shown above.</p>
+      </div>
+    </div>
+
+    <!-- ---------- Q3(b) ---------- -->
+    <div class="qcard">
+      <div class="punch-holes"><span></span><span></span><span></span></div>
+      <div class="qcard-head">
+        <span class="qnum">Q3 (b)</span>
+        <span class="qtitle">Java Applet — "This is MMMUT" &amp; the Applet Life Cycle</span>
+        <div class="meta-row">
+          <span class="meta-chip">Marks 3</span>
+          <span class="meta-chip">CO4</span>
+          <span class="meta-chip">BL3</span>
+          <span class="meta-chip">PO1</span>
+          <span class="meta-chip">PI 1.7.1</span>
+        </div>
+      </div>
+      <div class="question-text">Write a Java Applet program to display the text "This is MMMUT". Also, explain the Applet Life Cycle in detail.</div>
+
+      <div class="code-block"><span class="code-tag">Java</span><pre>import java.applet.Applet;
+import java.awt.Graphics;
+
+public class MMMUTApplet extends Applet {
+
+    public void init()  { <span class="cm">/* one-time setup */</span> }
+    public void start() { <span class="cm">/* runs each time applet becomes active */</span> }
+
+    public void paint(Graphics g) {
+        g.drawString("This is MMMUT", 50, 50);
+    }
+
+    public void stop()    { <span class="cm">/* runs when applet becomes inactive */</span> }
+    public void destroy() { <span class="cm">/* final cleanup */</span> }
+}</pre></div>
+      <span class="verified-tag">✓ compiles clean on JDK 21 (with a removal-deprecation warning — see note below)</span>
+
+      <div class="sec-heading">Applet Life Cycle</div>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 560 120" width="540" height="110">
+          <g font-family="Courier Prime" font-weight="700" font-size="12" fill="#1A3A6B" text-anchor="middle">
+            <rect x="10" y="30" width="90" height="34" rx="6" fill="#e6ecf5" stroke="#1A3A6B" stroke-width="1.6"/><text x="55" y="51">init()</text>
+            <rect x="140" y="30" width="90" height="34" rx="6" fill="#e6ecf5" stroke="#1A3A6B" stroke-width="1.6"/><text x="185" y="51">start()</text>
+            <rect x="270" y="30" width="90" height="34" rx="6" fill="#f3e0d6" stroke="#8B1A1A" stroke-width="1.6"/><text x="315" y="51" fill="#8B1A1A">paint()</text>
+            <rect x="400" y="30" width="70" height="34" rx="6" fill="#e6ecf5" stroke="#1A3A6B" stroke-width="1.6"/><text x="435" y="51">stop()</text>
+            <rect x="480" y="80" width="80" height="34" rx="6" fill="#e6ecf5" stroke="#1A3A6B" stroke-width="1.6"/><text x="520" y="101">destroy()</text>
+          </g>
+          <g stroke="#4A3728" stroke-width="1.5" fill="none" marker-end="url(#arrhead)">
+            <line x1="100" y1="47" x2="138" y2="47"/>
+            <line x1="230" y1="47" x2="268" y2="47"/>
+            <line x1="360" y1="47" x2="398" y2="47"/>
+          </g>
+          <path d="M435,64 C435,90 260,90 185,64" fill="none" stroke="#4A3728" stroke-width="1.3" stroke-dasharray="4 3"/>
+          <text x="310" y="88" text-anchor="middle" font-family="Lora" font-style="italic" font-size="10" fill="#6b5744">stop() → start() again if revisited</text>
+          <line x1="435" y1="64" x2="500" y2="80" stroke="#4A3728" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <p class="diagram-caption"><code>paint()</code> may fire many times while the applet is active (any time it needs to redraw).</p>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <tr><th>Method</th><th>When it runs</th></tr>
+          <tr><td><code>init()</code></td><td>Once, right when the applet is first loaded — setup, load resources</td></tr>
+          <tr><td><code>start()</code></td><td>After init(), and again every time the applet becomes active (e.g. page revisited)</td></tr>
+          <tr><td><code>paint(Graphics g)</code></td><td>Whenever the applet needs to (re)draw its output — can run many times</td></tr>
+          <tr><td><code>stop()</code></td><td>When the applet becomes inactive (user leaves the page)</td></tr>
+          <tr><td><code>destroy()</code></td><td>Once, right before the applet is unloaded — final cleanup</td></tr>
+        </table>
+      </div>
+
+      <div class="margin-note"><b>Worth knowing for the exam and beyond:</b> the Applet API is still present in JDK 21 (it compiles — I checked), but the compiler flags it with a <i>"has been deprecated and marked for removal"</i> warning, and browser plugin support / the appletviewer tool were removed years ago. It's taught for the life-cycle concept, but isn't how modern Java GUI work is actually done anymore (that's Swing/JavaFX territory).</div>
+
+      <div class="answer-box"><span class="ans-label">Answer</span><p>Life cycle order: <b>init() → start() → paint() → stop() → destroy()</b>, with start()/stop() able to repeat if the applet is revisited before final destruction.</p></div>
+    </div>
+
+    <!-- ---------- Q3(c) ---------- -->
+    <div class="qcard">
+      <div class="punch-holes"><span></span><span></span><span></span></div>
+      <div class="qcard-head">
+        <span class="qnum">Q3 (c)</span>
+        <span class="qtitle">AWT Layout Managers &amp; a Simple Login Form</span>
+        <div class="meta-row">
+          <span class="meta-chip">Marks 3</span>
+          <span class="meta-chip">CO5</span>
+          <span class="meta-chip">BL3</span>
+          <span class="meta-chip">PO1,3</span>
+          <span class="meta-chip">PI 1.7.1, 3.6.2</span>
+        </div>
+      </div>
+      <div class="question-text">Briefly explain the role of Layout Managers in AWT. Using AWT, write a program to design a simple form layout (username / password fields with OK / Cancel buttons, per the paper's sketch).</div>
+
+      <p>A <b>layout manager</b> automatically positions and sizes the components inside a container, so the programmer never hand-codes pixel coordinates — the layout adapts if the window is resized or components are added/removed.</p>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <tr><th>Layout</th><th>Behaviour</th></tr>
+          <tr><td><code>FlowLayout</code></td><td>Places components left-to-right, wrapping to a new line as needed — the default for <code>Panel</code></td></tr>
+          <tr><td><code>BorderLayout</code></td><td>Divides the container into NORTH / SOUTH / EAST / WEST / CENTER regions — the default for <code>Frame</code></td></tr>
+          <tr><td><code>GridLayout</code></td><td>Arranges components into a strict rows × columns grid of equal-sized cells</td></tr>
+        </table>
+      </div>
+
+      <div class="margin-note"><b>Why GridLayout fits this form:</b> the sketch needs two label+field rows plus a button row, all neatly aligned in two columns — exactly what <code>GridLayout(3,2)</code> gives for free.</div>
+
+      <div class="code-block"><span class="code-tag">Java</span><pre>import java.awt.*;
+import java.awt.event.*;
+
+public class LoginForm extends Frame {
+
+    LoginForm() {
+        setTitle("AWT Example");
+        setLayout(new GridLayout(3, 2, 10, 10));
+
+        add(new Label("Enter username"));
+        TextField username = new TextField();
+        add(username);
+
+        add(new Label("Enter password"));
+        TextField password = new TextField();
+        password.setEchoChar('*');
+        add(password);
+
+        add(new Button("OK"));
+        add(new Button("Cancel"));
+
+        setSize(320, 160);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) { dispose(); }
+        });
+    }
+
+    public static void main(String[] args) {
+        LoginForm f = new LoginForm();
+        f.setVisible(true);
+    }
+}</pre></div>
+      <span class="verified-tag">✓ compiles clean — OpenJDK 21, zero warnings</span>
+
+      <div class="answer-box">
+        <span class="ans-label">Answer</span>
+        <p>Layout managers handle component placement automatically. For this username/password/OK/Cancel form, <code>GridLayout(3,2,10,10)</code> lines everything up in three rows of two columns (label+field, label+field, button+button), matching the sketch directly.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>— End of Answer Manuscript · BCS 212 Object Oriented Programming through Java —</footer>
+</div>
+
+<script>
+  document.querySelectorAll('.tab-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById(btn.getAttribute('data-tab')).classList.add('active');
+      window.scrollTo({top: document.querySelector('.folder-tabs').offsetTop - 10, behavior:'smooth'});
+    });
+  });
+  document.querySelectorAll('.subq-toggle').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      btn.parentElement.classList.toggle('open');
+    });
+  });
+  document.querySelectorAll('.qcard').forEach(function(card){
+    var first = card.querySelector('.subq');
+    if(first){ first.classList.add('open'); }
+  });
+</script>
+
+</body>
+</html>
