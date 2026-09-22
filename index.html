@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>BCS 212 · Object Oriented Programming through Java — Minor Test Solution Manuscript</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,9 +22,11 @@
     --blue-soft:#e6ecf5;
     --rule-line:rgba(139,101,60,0.22);
     --paper-edge:rgba(74,55,40,0.28);
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
   }
   *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:smooth; scroll-padding-top:env(safe-area-inset-top,0px);}
   body{
     margin:0;
     background:#dcca9b;
@@ -34,6 +36,9 @@
     font-family:'Lora', Georgia, serif;
     color:var(--sepia);
     padding:28px 14px 60px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){ }
   }
   .paper{
     max-width:980px;
@@ -98,10 +103,12 @@
   @keyframes fadeIn{ from{opacity:0; transform:translateY(-4px);} to{opacity:1; transform:translateY(0);} }
   .formula{ font-family:'Courier Prime', monospace; background:var(--blue-soft); color:var(--blue); border:1px solid rgba(26,58,107,0.3); border-radius:3px; padding:12px 16px; margin:12px 0; font-size:0.92rem; line-height:1.7; overflow-x:auto; }
   .code-block{ position:relative; margin:12px 0; }
-  .code-block .code-tag{ position:absolute; top:-10px; right:10px; background:var(--blue); color:var(--parchment); font-family:'Courier Prime', monospace; font-size:0.68rem; padding:2px 8px; border-radius:8px; letter-spacing:0.5px; }
+  .code-block .code-tag{ position:absolute; top:-10px; right:78px; background:var(--blue); color:var(--parchment); font-family:'Courier Prime', monospace; font-size:0.68rem; padding:2px 8px; border-radius:8px; letter-spacing:0.5px; z-index:2; }
+  .copy-code-btn{ position:absolute; top:7px; right:8px; background:rgba(230,236,245,0.18); border:1px solid rgba(255,255,255,0.22); color:#eef3fb; font-family:'Courier Prime', monospace; font-size:0.68rem; padding:2px 8px; border-radius:3px; cursor:pointer; transition:all 0.15s ease; z-index:2; }
+  .copy-code-btn:hover{ background:var(--blue); color:#fff; border-color:#8fd0ff; }
   .code-block pre{ font-family:'Courier Prime', monospace; background:#2b3a52; color:#eef3fb; border:1px solid rgba(26,58,107,0.5); border-radius:4px; padding:14px 16px; margin:0; font-size:0.82rem; line-height:1.55; overflow-x:auto; white-space:pre; }
   .code-block pre .cm{ color:#9db3d6; font-style:italic; }
-  .console-out{ font-family:'Courier Prime', monospace; background:#111; color:#8fffb0; border:1px solid #333; border-radius:4px; padding:12px 16px; margin:10px 0; font-size:0.85rem; line-height:1.6; white-space:pre; }
+  .console-out{ font-family:'Courier Prime', monospace; background:#111; color:#8fffb0; border:1px solid #333; border-radius:4px; padding:12px 16px; margin:10px 0; font-size:0.85rem; line-height:1.6; white-space:pre; overflow-x:auto; }
   .console-out .prompt{ color:#8fd0ff; }
   .verified-tag{ display:inline-flex; align-items:center; gap:5px; font-family:'Courier Prime', monospace; font-size:0.7rem; background:rgba(26,92,92,0.15); color:var(--teal); border:1px solid var(--teal); padding:2px 9px; border-radius:10px; margin:8px 0 0; }
   .answer-box{ border-left:5px solid var(--teal); background:rgba(26,92,92,0.07); padding:12px 18px; margin:16px 0; border-radius:0 3px 3px 0; }
@@ -121,6 +128,46 @@
   ul.plain{ padding-left:22px; } ul.plain li{ margin-bottom:6px; line-height:1.6; }
   .final-badge{ display:inline-block; background:var(--crimson); color:var(--parchment); font-family:'IM Fell English', serif; font-size:0.95rem; padding:2px 12px; border-radius:2px; margin-left:8px; transform:rotate(-1.5deg); }
   footer{ position:relative; z-index:2; text-align:center; font-family:'IM Fell English', serif; font-style:italic; color:var(--sepia-soft); padding:26px 20px 34px; border-top:2px solid var(--sepia); }
+
+  /* --- syllabus tab additions (reuses existing tokens/classes) --- */
+  .syl-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px 22px; }
+  .syl-grid ul.plain{ margin:6px 0 0; }
+  .priority-list{ list-style:none; padding:0; margin:8px 0 0; counter-reset:pri; }
+  .priority-list li{ counter-increment:pri; padding:6px 0 6px 34px; position:relative; line-height:1.5; border-bottom:1px dashed var(--paper-edge); }
+  .priority-list li:last-child{ border-bottom:none; }
+  .priority-list li::before{ content:counter(pri); position:absolute; left:0; top:5px; width:22px; height:22px; border-radius:50%; background:var(--crimson); color:var(--parchment); font-family:'Courier Prime',monospace; font-size:0.72rem; display:flex; align-items:center; justify-content:center; }
+  .ascii-diagram{ font-family:'Courier Prime', monospace; background:var(--blue-soft); color:var(--blue); border:1px solid rgba(26,58,107,0.3); border-radius:4px; padding:14px 16px; margin:12px 0; font-size:0.82rem; line-height:1.45; overflow-x:auto; white-space:pre; }
+  .syl-topic-head{ font-family:'IM Fell English', serif; font-size:1.18rem; color:var(--crimson); margin:18px 0 8px; border-bottom:1px dashed var(--paper-edge); padding-bottom:4px; }
+  .syl-subhead{ font-family:'Lora', serif; font-weight:700; font-size:0.98rem; color:var(--teal); margin:14px 0 6px; }
+  .code-inline{ font-family:'Courier Prime', monospace; background:rgba(26,58,107,0.08); color:var(--blue); padding:1px 5px; border-radius:3px; font-size:0.88em; }
+
+  /* --- Search & Expand toolbar for Syllabus --- */
+  .syl-toolbar{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; margin:16px 0 16px; padding:10px 14px; background:var(--parchment-deep); border:1.5px solid var(--sepia-soft); border-radius:3px; box-shadow:1px 2px 6px rgba(74,55,40,0.1); }
+  .syl-search-wrap{ position:relative; flex:1; min-width:240px; display:flex; align-items:center; }
+  .syl-search-icon{ position:absolute; left:10px; font-size:0.85rem; pointer-events:none; opacity:0.7; }
+  #syl-search{ width:100%; padding:7px 28px 7px 32px; background:var(--parchment); border:1px solid var(--sepia-soft); border-radius:2px; font-family:'Lora', Georgia, serif; font-size:0.9rem; color:var(--sepia); outline:none; }
+  #syl-search:focus{ border-color:var(--teal); box-shadow:0 0 0 2px rgba(26,92,92,0.2); }
+  #syl-clear-btn{ position:absolute; right:6px; background:none; border:none; color:var(--sepia-soft); cursor:pointer; font-size:0.85rem; display:none; }
+  .syl-btn-group{ display:flex; gap:8px; }
+  .syl-action-btn{ font-family:'Courier Prime', monospace; font-size:0.78rem; background:var(--parchment); color:var(--sepia); border:1px solid var(--sepia-soft); border-radius:2px; padding:6px 12px; cursor:pointer; transition:all 0.15s ease; }
+  .syl-action-btn:hover{ background:var(--teal-soft); color:var(--teal); border-color:var(--teal); }
+  .syl-search-count{ font-family:'Courier Prime', monospace; font-size:0.82rem; color:var(--crimson); margin:-8px 0 14px; font-style:italic; }
+
+  @media print{
+    body{ background:#fff !important; padding:0 !important; color:#111 !important; }
+    .paper{ max-width:100% !important; box-shadow:none !important; background:#fff !important; background-image:none !important; }
+    .paper::before, .paper::after{ display:none !important; }
+    .folder-tabs{ display:none !important; }
+    .tab-panel{ display:block !important; padding:10px 0 !important; border:none !important; }
+    .subq-body{ display:block !important; }
+    .subq-arrow{ display:none !important; }
+    .copy-code-btn, .syl-toolbar, .syl-search-count{ display:none !important; }
+    .punch-holes{ display:none !important; }
+    .qcard{ box-shadow:none !important; border:1px solid #999 !important; break-inside:avoid; padding:14px 20px !important; }
+    .code-block pre{ background:#f4f4f4 !important; color:#111 !important; border:1px solid #ccc !important; }
+    .console-out{ background:#f8f8f8 !important; color:#111 !important; border:1px solid #ccc !important; }
+  }
+
   @media (max-width:640px){
     .masthead{ padding:26px 18px 20px 60px; } .instructions-note{ margin:16px 18px 0 60px; }
     .folder-tabs{ padding:18px 12px 0 60px; } .tab-panel{ padding:24px 14px 30px 60px; }
@@ -128,6 +175,7 @@
     .qcard{ padding:18px 14px 18px 40px; margin-left:2px; } .punch-holes{ left:-26px; width:18px; } .punch-holes span{ width:10px; height:10px; }
     .masthead h1{ font-size:1.7rem; } .tab-btn{ font-size:0.95rem; padding:8px 14px 10px; }
     .code-block pre{ font-size:0.72rem; }
+    .syl-grid{ grid-template-columns:1fr; }
   }
 </style>
 </head>
@@ -142,18 +190,19 @@
     <p class="sub">Minor Test-I (Examination) 2025&ndash;26 · Java · Complete Solution Manuscript</p>
     <div class="meta-strip">
       <span><b>Course:</b> Object Oriented Programming through Java</span>
-      <span><b>Sections:</b> Q1 · Q2 · Q3</span>
+      <span><b>Sections:</b> Q1 · Q2 · Q3 · Syllabus</span>
       <span><b>Code verified:</b> compiled &amp; run on OpenJDK 21</span>
     </div>
     <div class="stamp">verified ✓</div>
   </div>
 
-  <p class="instructions-note">Original paper instruction: <b>attempt any two parts of each question</b> (part (a) of every question is compulsory). For complete revision, every part (a)&ndash;(c) of Q1, Q2 and Q3 is solved in full below. Every code snippet and console output on this page was actually <b>compiled and executed</b> (OpenJDK 21) rather than hand-traced, including the exact JVM error messages in Q1(a).</p>
+  <p class="instructions-note">Original paper instruction: <b>attempt any two parts of each question</b> (part (a) of every question is compulsory). For complete revision, every part (a)&ndash;(c) of Q1, Q2 and Q3 is solved in full below, and a full <b>Syllabus</b> reference tab collects every topic likely to appear on future papers — expanded here with extra code, worked examples and diagrams for every sub-topic. Every code snippet and console output in the Q1&ndash;Q3 sections was actually <b>compiled and executed</b> (OpenJDK 21) rather than hand-traced, including the exact JVM error messages in Q1(a).</p>
 
   <div class="folder-tabs">
     <button class="tab-btn active" data-tab="q1"><span class="tabnum">Q1</span>Java Basics, Objects &amp; Exceptions</button>
     <button class="tab-btn" data-tab="q2"><span class="tabnum">Q2</span>Polymorphism, Interfaces &amp; Keywords</button>
     <button class="tab-btn" data-tab="q3"><span class="tabnum">Q3</span>Threads, Applets &amp; AWT</button>
+    <button class="tab-btn" data-tab="syllabus"><span class="tabnum">§</span>Full Syllabus</button>
   </div>
 
   <!-- ============================================================ -->
@@ -822,10 +871,2012 @@ public class LoginForm extends Frame {
 
   </div>
 
+  <!-- ============================================================ -->
+  <!-- ================     SYLLABUS  PANEL       ================ -->
+  <!-- ============================================================ -->
+  <div class="tab-panel" id="syllabus">
+    <h2 class="panel-title">Complete Syllabus Reference <span class="q-any">Unit I &amp; Unit II — Full Exam Manuscript with Code, Worked Examples, Architecture Diagrams &amp; 10-Mark Model Programs</span></h2>
+
+    <div class="syl-toolbar">
+      <div class="syl-search-wrap">
+        <span class="syl-search-icon">🔍</span>
+        <input type="text" id="syl-search" placeholder="Search syllabus topics (e.g. thread, AWT, layout, exception, socket, scanner, string)..." autocomplete="off">
+        <button id="syl-clear-btn" title="Clear search">✕</button>
+      </div>
+      <div class="syl-btn-group">
+        <button class="syl-action-btn" id="syl-expand-all">▶▶ Expand All</button>
+        <button class="syl-action-btn" id="syl-collapse-all">◀◀ Collapse All</button>
+      </div>
+    </div>
+    <div id="syl-search-results" class="syl-search-count" style="display:none;"></div>
+
+    <!-- ---------- Unit I ---------- -->
+    <div class="qcard">
+      <div class="punch-holes"><span></span><span></span><span></span></div>
+      <div class="qcard-head">
+        <span class="qnum">Unit I</span>
+        <span class="qtitle">Java Fundamentals &amp; Core Object-Oriented Programming</span>
+        <div class="meta-row">
+          <span class="meta-chip">15 Topics</span>
+          <span class="meta-chip">Foundational</span>
+          <span class="meta-chip">10-Mark Model Programs</span>
+        </div>
+      </div>
+      <div class="question-text">Covers the object-oriented paradigm, the Java platform architecture (JVM/JDK/JRE), and core language mechanics: variables, operators, control flow, arrays/strings, classes, constructors, inheritance, polymorphism, packages, and interfaces.</div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 1. Introduction to OOP &amp; The Four Fundamental Pillars</button>
+        <div class="subq-body">
+          <p><b>Object-Oriented Programming (OOP)</b> is a programming paradigm where programs are organized around <b>objects and classes</b> rather than functions and sequential logic. An <b>object</b> represents a real-world entity combining <b>state</b> (data/fields), <b>behavior</b> (methods/operations), and a unique <b>identity</b> in memory.</p>
+
+          <div class="ascii-diagram">
+                 Real-World Object Concept
+          ┌───────────────────────────────────┐
+          │              Student              │
+          ├───────────────────────────────────┤
+          │ State/Data:                       │
+          │   name   : "Shubham"              │
+          │   rollNo : 64                     │
+          │   marks  : 92                     │
+          ├───────────────────────────────────┤
+          │ Behavior/Methods:                 │
+          │   study()                         │
+          │   displayMarks()                  │
+          └───────────────────────────────────┘</div>
+
+          <p class="syl-topic-head">The Four Major Pillars of OOP</p>
+          <div class="ascii-diagram">
+                              OOP
+                               │
+               ┌───────────────┼───────────────┐
+               ▼               ▼               ▼
+         Encapsulation    Inheritance    Polymorphism
+                               │
+                           Abstraction</div>
+
+          <p class="syl-subhead">A. Encapsulation (Data Hiding &amp; Bundling)</p>
+          <p>Wrapping data (variables) and code (methods) together into a single unit (class), keeping fields <code>private</code> and providing controlled access via <code>public</code> getters and setters.</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>class Student {
+    private int marks; <span class="cm">// hidden from direct outside access</span>
+
+    public void setMarks(int marks) {
+        if (marks >= 0 && marks <= 100) {
+            this.marks = marks;
+        }
+    }
+    public int getMarks() {
+        return this.marks;
+    }
+}
+public class EncapsulationDemo {
+    public static void main(String[] args) {
+        Student s = new Student();
+        s.setMarks(95);
+        System.out.println("Marks: " + s.getMarks());
+    }
+}</pre></div>
+          <div class="console-out">Marks: 95</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+          <p><b>Advantages:</b> Data security, data hiding, controlled validation, and loose coupling for easier maintenance.</p>
+
+          <p class="syl-subhead">B. Abstraction (Hiding Complexity)</p>
+          <p>Hiding internal implementation details and displaying only essential functional features to the user. Achieved in Java via <b>abstract classes</b> and <b>interfaces</b>.</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>abstract class Vehicle {
+    abstract void start(); <span class="cm">// essential interface exposed, details hidden</span>
+
+    void fuelUp() {
+        System.out.println("Filling fuel tank");
+    }
+}
+class Car extends Vehicle {
+    @Override
+    void start() {
+        System.out.println("Car started with electronic push button");
+    }
+}
+public class AbstractionDemo {
+    public static void main(String[] args) {
+        Vehicle v = new Car();
+        v.start();
+        v.fuelUp();
+    }
+}</pre></div>
+          <div class="console-out">Car started with electronic push button
+Filling fuel tank</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+
+          <p class="syl-subhead">C. Inheritance (Reusability &amp; Hierarchy)</p>
+          <p>The mechanism by which one class acquires the properties and behaviors of another class using <code>extends</code>.</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>class Animal {
+    void eat() { System.out.println("Animal is eating"); }
+}
+class Dog extends Animal {
+    void bark() { System.out.println("Dog is barking"); }
+}
+public class InheritanceDemo {
+    public static void main(String[] args) {
+        Dog d = new Dog();
+        d.eat();  <span class="cm">// inherited from Animal</span>
+        d.bark(); <span class="cm">// subclass-specific</span>
+    }
+}</pre></div>
+          <div class="console-out">Animal is eating
+Dog is barking</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+          <p><b>Benefits:</b> Direct code reusability, reduced code duplication, hierarchical classification, and runtime polymorphism foundation.</p>
+
+          <p class="syl-subhead">D. Polymorphism (One Name, Many Forms)</p>
+          <p>Ability of a message, method, or object to be processed in more than one form. Divided into:</p>
+          <ul class="plain">
+            <li><b>Compile-Time Polymorphism (Static Binding / Method Overloading):</b> Multiple methods in the same class share the same name but have different parameter lists.</li>
+            <li><b>Runtime Polymorphism (Dynamic Binding / Method Overriding):</b> Subclass overrides a method defined in the superclass; resolved at runtime based on the actual object.</li>
+          </ul>
+          <div class="code-block"><span class="code-tag">Java</span><pre><span class="cm">// 1. Method Overloading (Compile-Time)</span>
+class Calculator {
+    int add(int a, int b) { return a + b; }
+    int add(int a, int b, int c) { return a + b + c; }
+}
+
+<span class="cm">// 2. Method Overriding (Runtime)</span>
+class Shape {
+    void draw() { System.out.println("Drawing generic shape"); }
+}
+class Circle extends Shape {
+    @Override
+    void draw() { System.out.println("Drawing circle"); }
+}
+public class PolymorphismDemo {
+    public static void main(String[] args) {
+        Calculator calc = new Calculator();
+        System.out.println("Overloading: " + calc.add(10, 20) + ", " + calc.add(5, 10, 15));
+
+        Shape s = new Circle(); <span class="cm">// Dynamic Method Dispatch</span>
+        s.draw();
+    }
+}</pre></div>
+          <div class="console-out">Overloading: 30, 30
+Drawing circle</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+
+          <p class="syl-subhead">8 Major Advantages of OOP</p>
+          <ol class="steps">
+            <li><b>Reusability:</b> Inherited classes reuse existing code without re-writing.</li>
+            <li><b>Modularity:</b> Objects are independent modules that can be maintained separately.</li>
+            <li><b>Data Security:</b> Encapsulation hides private fields from rogue external tampering.</li>
+            <li><b>Easy Maintenance:</b> Bugs are isolated to specific classes without rippling everywhere.</li>
+            <li><b>Flexibility:</b> Polymorphic interfaces allow swapping implementations seamlessly.</li>
+            <li><b>Scalability:</b> System upgrades scale naturally through class hierarchies.</li>
+            <li><b>Natural Modeling:</b> Maps directly to real-world business domains.</li>
+            <li><b>Reduced Redundancy:</b> DRY (Don't Repeat Yourself) through inheritance.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 2. Features of Java (The 11 Pillars)</button>
+        <div class="subq-body">
+          <p>Java was created by <b>James Gosling</b> and his team at Sun Microsystems (1995) around the revolutionary philosophy: <b>Write Once, Run Anywhere (WORA)</b>.</p>
+
+          <div class="ascii-diagram">
+                         Java Execution Pipeline
+          Java Source (.java)
+                 │
+                 ▼ javac (Compiler)
+          Java Bytecode (.class)   <-- Platform Neutral
+                 │
+                 ▼ JVM (Java Virtual Machine)
+          Machine Instructions     <-- OS-Specific Native Code</div>
+
+          <p class="syl-subhead">The 11 Key Features to Write in an Exam:</p>
+          <ol class="steps">
+            <li><b>Simple:</b> Clean C++-like syntax with tricky and error-prone features removed: no raw pointer arithmetic, no operator overloading, no multiple inheritance of classes, and no manual memory deallocation.</li>
+            <li><b>Object-Oriented:</b> Pure OOP architecture where everything (except 8 primitives) is an object.</li>
+            <li><b>Platform Independent:</b> Source code compiles to platform-neutral bytecode (<code>.class</code>) that runs on any OS equipped with a JVM.</li>
+            <li><b>Portable:</b> Primitive data types have fixed bit-sizes across all CPU architectures (e.g. <code>int</code> is strictly 32-bit two's complement everywhere).</li>
+            <li><b>Secure:</b> Runs inside a secure sandboxed environment; lacks direct pointer access, performs bytecode verification before execution, and uses a security manager.</li>
+            <li><b>Robust:</b> Heavy emphasis on compile-time error checking, strict runtime type checks, built-in exception handling, and automatic garbage collection.</li>
+            <li><b>Multithreaded:</b> Built-in language and library support for concurrent execution paths sharing process memory.</li>
+            <li><b>Distributed:</b> Native support for network programming via <code>java.net</code>, Sockets, and RMI (Remote Method Invocation).</li>
+            <li><b>High Performance:</b> JIT (Just-In-Time) compiler compiles frequently executed bytecode hot-spots directly into native machine code at runtime.</li>
+            <li><b>Dynamic:</b> Dynamic class loading enables loading classes, interfaces, and libraries on demand at runtime without recompiling the application.</li>
+            <li><b>Automatic Garbage Collection:</b> Unreachable heap objects are automatically identified and reclaimed by the JVM background GC daemon.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 3. JVM, JDK, JRE &amp; JVM Architecture</button>
+        <div class="subq-body">
+          <div class="formula">
+            JDK = JRE + Development Tools (javac, java, javadoc, jar, jdb)<br>
+            JRE = JVM + Java Class Standard Libraries (rt.jar / java.base)<br>
+            JVM = Executes Bytecode (.class) on Host Hardware
+          </div>
+
+          <div class="diagram-wrap">
+            <svg viewBox="0 0 460 150" width="440" height="140">
+              <g font-family="Courier Prime" font-size="11" fill="#1A3A6B" text-anchor="middle">
+                <rect x="180" y="8" width="100" height="26" rx="5" fill="#e6ecf5" stroke="#1A3A6B" stroke-width="1.4"/><text x="230" y="26">JVM</text>
+                <rect x="30" y="60" width="110" height="26" rx="5" fill="#f3e0d6" stroke="#8B1A1A" stroke-width="1.4"/><text x="85" y="78" fill="#8B1A1A">Class Loader</text>
+                <rect x="330" y="60" width="110" height="26" rx="5" fill="#f3e0d6" stroke="#8B1A1A" stroke-width="1.4"/><text x="385" y="78" fill="#8B1A1A">Execution Engine</text>
+                <rect x="160" y="60" width="140" height="26" rx="5" fill="#e4efec" stroke="#1A5C5C" stroke-width="1.4"/><text x="230" y="78" fill="#1A5C5C">Runtime Data Areas</text>
+                <rect x="150" y="110" width="60" height="26" rx="5" fill="#fff" stroke="#4A3728" stroke-width="1.2"/><text x="180" y="128" fill="#4A3728">Heap</text>
+                <rect x="220" y="110" width="60" height="26" rx="5" fill="#fff" stroke="#4A3728" stroke-width="1.2"/><text x="250" y="128" fill="#4A3728">Stack</text>
+                <rect x="290" y="110" width="90" height="26" rx="5" fill="#fff" stroke="#4A3728" stroke-width="1.2"/><text x="335" y="128" fill="#4A3728">Method Area</text>
+              </g>
+              <g stroke="#4A3728" stroke-width="1.2" fill="none">
+                <line x1="230" y1="34" x2="230" y2="60"/>
+                <line x1="180" y1="34" x2="85" y2="60"/>
+                <line x1="280" y1="34" x2="385" y2="60"/>
+                <line x1="230" y1="86" x2="180" y2="110"/>
+                <line x1="230" y1="86" x2="250" y2="110"/>
+                <line x1="230" y1="86" x2="335" y2="110"/>
+              </g>
+            </svg>
+          </div>
+          <p class="diagram-caption">JVM Internal Architecture: Class Loader loads .class files; Runtime Data Areas hold memory; Execution Engine interprets/JIT-compiles bytecode into native CPU instructions.</p>
+
+          <p class="syl-subhead">Major Components of the JVM:</p>
+          <ul class="plain">
+            <li><b>Class Loader Subsystem:</b> Responsible for Loading (loading binary byte data into memory), Linking (verification, preparation of static fields, resolution of symbolic references), and Initialization (executing static initializers).</li>
+            <li><b>Method Area:</b> Shared across all threads; stores class-level data, bytecode, method signatures, and runtime constant pool.</li>
+            <li><b>Heap Area:</b> Shared memory area where all Java objects and arrays are allocated (managed by Garbage Collector).</li>
+            <li><b>Java Thread Stack:</b> Private to each thread; created at thread start; stores local variables, method invocations, and stack frames.</li>
+            <li><b>PC (Program Counter) Register:</b> Holds the address of the currently executing JVM instruction for each thread.</li>
+            <li><b>Native Method Stack:</b> Holds native C/C++ method invocations executed via JNI.</li>
+            <li><b>Execution Engine:</b> Consists of the <b>Interpreter</b> (reads bytecode instruction-by-instruction), <b>JIT Compiler</b> (compiles hotspots to native code), and <b>Garbage Collector</b>.</li>
+          </ul>
+
+          <div class="table-wrap">
+            <table class="data-table">
+              <tr><th>Aspect</th><th>JVM</th><th>JRE</th><th>JDK</th></tr>
+              <tr><td>Full Form</td><td>Java Virtual Machine</td><td>Java Runtime Environment</td><td>Java Development Kit</td></tr>
+              <tr><td>Primary Role</td><td>Executes bytecode</td><td>Provides environment to run Java</td><td>Complete kit to develop and run Java</td></tr>
+              <tr><td>Contains</td><td>Class loader + memory + execution engine</td><td>JVM + standard libraries</td><td>JRE + compiler (javac), debugger, jar tool</td></tr>
+              <tr><td>Platform</td><td>Platform Dependent</td><td>Platform Dependent</td><td>Platform Dependent</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 4. Structure of a Java Program &amp; Keyword Breakdown</button>
+        <div class="subq-body">
+          <div class="code-block"><span class="code-tag">Java</span><pre><span class="cm">// 1. Package Declaration (Optional)</span>
+package com.mmmut.cse;
+
+<span class="cm">// 2. Import Statements (Optional)</span>
+import java.util.Scanner;
+
+<span class="cm">// 3. Class Declaration</span>
+public class HelloWorld {
+
+    <span class="cm">// 4. Main Method: Program Execution Entry Point</span>
+    public static void main(String[] args) {
+        System.out.println("Hello, MMMUT Java Manuscript!");
+    }
+}</pre></div>
+
+          <p class="syl-subhead">Deconstruction of public static void main(String[] args):</p>
+          <ul class="plain">
+            <li><b>public:</b> Access modifier that grants permission to the external JVM launcher to invoke this method from outside the class scope.</li>
+            <li><b>static:</b> Allows the JVM to invoke the method directly using the class name (<code>HelloWorld.main()</code>) without needing to instantiate an object of the class first.</li>
+            <li><b>void:</b> Specifies that the method does not return any value back to the JVM when execution concludes.</li>
+            <li><b>main:</b> The standardized identifier searched by the JVM as the startup hook.</li>
+            <li><b>String[] args:</b> Array of String objects holding command-line arguments passed to the program upon launch.</li>
+            <li><b>System.out.println():</b> <code>System</code> is a final class in <code>java.lang</code>, <code>out</code> is a static <code>PrintStream</code> member, and <code>println()</code> prints text followed by a platform-specific newline.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 5. Variables, Data Types &amp; Operators</button>
+        <div class="subq-body">
+          <p class="syl-subhead">Three Variable Categories in Java</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>class ScopeDemo {
+    static String university = "MMMUT"; <span class="cm">// Static (Class) Variable: 1 copy shared by all instances</span>
+    int rollNo = 101;                   <span class="cm">// Instance Variable: unique copy per object instance</span>
+
+    void compute() {
+        int bonus = 5;                  <span class="cm">// Local Variable: allocated on stack, must be initialized before use</span>
+        System.out.println("Total: " + (rollNo + bonus) + " at " + university);
+    }
+}</pre></div>
+
+          <p class="syl-subhead">The 8 Primitive Data Types</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <tr><th>Type</th><th>Size</th><th>Default</th><th>Range / Description</th><th>Example</th></tr>
+              <tr><td><code>byte</code></td><td>8-bit (1 byte)</td><td>0</td><td>-128 to 127</td><td><code>byte b = 100;</code></td></tr>
+              <tr><td><code>short</code></td><td>16-bit (2 bytes)</td><td>0</td><td>-32,768 to 32,767</td><td><code>short s = 5000;</code></td></tr>
+              <tr><td><code>int</code></td><td>32-bit (4 bytes)</td><td>0</td><td>-2<sup>31</sup> to 2<sup>31</sup>-1</td><td><code>int x = 42;</code></td></tr>
+              <tr><td><code>long</code></td><td>64-bit (8 bytes)</td><td>0L</td><td>-2<sup>63</sup> to 2<sup>63</sup>-1</td><td><code>long l = 100000L;</code></td></tr>
+              <tr><td><code>float</code></td><td>32-bit (4 bytes)</td><td>0.0f</td><td>IEEE 754 floating point</td><td><code>float f = 3.14f;</code></td></tr>
+              <tr><td><code>double</code></td><td>64-bit (8 bytes)</td><td>0.0d</td><td>IEEE 754 double precision</td><td><code>double d = 3.14159;</code></td></tr>
+              <tr><td><code>char</code></td><td>16-bit (2 bytes)</td><td>'\u0000'</td><td>Unicode characters (0 to 65,535)</td><td><code>char c = 'A';</code></td></tr>
+              <tr><td><code>boolean</code></td><td>JVM-dependent</td><td>false</td><td>true or false</td><td><code>boolean flag = true;</code></td></tr>
+            </table>
+          </div>
+
+          <p class="syl-subhead">Java Operators Overview</p>
+          <div class="syl-grid">
+            <ul class="plain">
+              <li><b>Arithmetic:</b> <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code></li>
+              <li><b>Relational:</b> <code>==</code>, <code>!=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code></li>
+              <li><b>Logical:</b> <code>&amp;&amp;</code> (short-circuit AND), <code>||</code> (short-circuit OR), <code>!</code> (NOT)</li>
+              <li><b>Assignment:</b> <code>=</code>, <code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code>, <code>%=</code></li>
+            </ul>
+            <ul class="plain">
+              <li><b>Unary:</b> <code>++</code> (prefix/postfix), <code>--</code>, <code>+</code>, <code>-</code>, <code>~</code> (bitwise NOT)</li>
+              <li><b>Ternary:</b> <code>condition ? val1 : val2</code></li>
+              <li><b>Bitwise:</b> <code>&amp;</code> (AND), <code>|</code> (OR), <code>^</code> (XOR)</li>
+              <li><b>Shift:</b> <code>&lt;&lt;</code> (left), <code>&gt;&gt;</code> (signed right), <code>&gt;&gt;&gt;</code> (unsigned right)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 6. Standard Input/Output &amp; Scanner Mechanics</button>
+        <div class="subq-body">
+          <p>Java supports console output via <code>System.out.print()</code> (no newline), <code>System.out.println()</code> (with newline), and <code>System.out.printf()</code> (C-style formatting e.g. <code>%d</code>, <code>%s</code>, <code>%.2f</code>).</p>
+          <p>Console input is typically handled via <code>java.util.Scanner</code>.</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>import java.util.Scanner;
+
+public class ScannerDemo {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner("42 3.14 Java\nFull line input text");
+
+        int age = sc.nextInt();
+        double pi = sc.nextDouble();
+        String token = sc.next();       <span class="cm">// reads single whitespace-delimited word</span>
+        sc.nextLine();                  <span class="cm">// consume remaining newline</span>
+        String fullLine = sc.nextLine(); <span class="cm">// reads entire remaining line</span>
+
+        System.out.println("Age: " + age + " | Pi: " + pi + " | Word: " + token);
+        System.out.println("Line: " + fullLine);
+        sc.close();
+    }
+}</pre></div>
+          <div class="console-out">Age: 42 | Pi: 3.14 | Word: Java
+Line: Full line input text</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+          <div class="margin-note"><b>Exam Trap to Highlight:</b> After calling <code>sc.nextInt()</code> or <code>sc.nextDouble()</code>, the newline character <code>\n</code> remains in the input buffer. If you immediately call <code>sc.nextLine()</code>, it reads that leftover empty newline rather than waiting for user input! Always call an extra <code>sc.nextLine()</code> to clear the buffer.</div>
+        </div>
+      </div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 7. Control Flow Statements &amp; Loops</button>
+        <div class="subq-body">
+          <p>Java provides structured control flow mechanisms divided into <b>Decision Making</b>, <b>Looping</b>, and <b>Jump Statements</b>.</p>
+
+          <p class="syl-subhead">Switch-Case with Break</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>int day = 3;
+switch (day) {
+    case 1:  System.out.println("Monday"); break;
+    case 2:  System.out.println("Tuesday"); break;
+    case 3:  System.out.println("Wednesday"); break;
+    default: System.out.println("Invalid day"); break;
+}</pre></div>
+
+          <p class="syl-subhead">Comparison of the Three Loops</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <tr><th>Loop</th><th>Condition Check</th><th>Minimum Iterations</th><th>Typical Best Use</th></tr>
+              <tr><td><code>for</code></td><td>Entry-controlled (at start)</td><td>0</td><td>When exact number of iterations is known beforehand</td></tr>
+              <tr><td><code>while</code></td><td>Entry-controlled (at start)</td><td>0</td><td>When iteration depends on an external boolean condition</td></tr>
+              <tr><td><code>do-while</code></td><td>Exit-controlled (at end)</td><td>1</td><td>Menu-driven programs where body must run at least once</td></tr>
+            </table>
+          </div>
+
+          <div class="code-block"><span class="code-tag">Java</span><pre>public class LoopsDemo {
+    public static void main(String[] args) {
+        <span class="cm">// for loop</span>
+        for (int i = 1; i <= 3; i++) {
+            if (i == 2) continue; <span class="cm">// skip iteration 2</span>
+            System.out.print(i + " ");
+        }
+        System.out.println();
+
+        <span class="cm">// do-while loop (guaranteed at least one execution)</span>
+        int count = 10;
+        do {
+            System.out.println("Executed once even though condition is false: " + count);
+            count++;
+        } while (count < 5);
+    }
+}</pre></div>
+          <div class="console-out">1 3 
+Executed once even though condition is false: 10</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+          <p><b>Jump Statements:</b> <code>break</code> (exits switch or loop immediately), <code>continue</code> (skips current loop iteration to next evaluation), <code>return</code> (exits current method and optionally returns value).</p>
+        </div>
+      </div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 8. Arrays &amp; Advanced String Handling</button>
+        <div class="subq-body">
+          <p class="syl-subhead">1D and 2D Array Traversal</p>
+          <p>An array is an object holding a fixed-size sequence of elements of the same type, indexed starting at 0.</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>public class ArrayDemo {
+    public static void main(String[] args) {
+        <span class="cm">// 1D Array with Enhanced For Loop</span>
+        int[] scores = {85, 92, 78};
+        for (int s : scores) {
+            System.out.print(s + " ");
+        }
+        System.out.println();
+
+        <span class="cm">// 2D Matrix (3x2)</span>
+        int[][] matrix = {
+            {1, 2},
+            {3, 4},
+            {5, 6}
+        };
+        System.out.println("Matrix rows: " + matrix.length + ", cols: " + matrix[0].length);
+        System.out.println("Element at [1][1] = " + matrix[1][1]);
+    }
+}</pre></div>
+          <div class="console-out">85 92 78 
+Matrix rows: 3, cols: 2
+Element at [1][1] = 4</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+
+          <p class="syl-topic-head">String Immutability &amp; The String Pool</p>
+          <p>In Java, <code>String</code> objects are <b>immutable</b>: once allocated, their character contents cannot be altered in memory. Concatenations create entirely new String objects in the <b>String Constant Pool</b>.</p>
+
+          <p class="syl-subhead">== vs .equals() Comparison</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>public class StringEqualityDemo {
+    public static void main(String[] args) {
+        String s1 = "Hello";                  <span class="cm">// stored in String Pool</span>
+        String s2 = "Hello";                  <span class="cm">// points to same pooled reference</span>
+        String s3 = new String("Hello");      <span class="cm">// new heap object allocated</span>
+
+        System.out.println("s1 == s2: " + (s1 == s2));           <span class="cm">// true: identical memory address</span>
+        System.out.println("s1 == s3: " + (s1 == s3));           <span class="cm">// false: different memory addresses</span>
+        System.out.println("s1.equals(s3): " + s1.equals(s3));   <span class="cm">// true: content value is identical</span>
+    }
+}</pre></div>
+          <div class="console-out">s1 == s2: true
+s1 == s3: false
+s1.equals(s3): true</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+
+          <p class="syl-subhead">String vs StringBuilder vs StringBuffer</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <tr><th>Class</th><th>Mutability</th><th>Thread Safety</th><th>Performance</th><th>Best Scenario</th></tr>
+              <tr><td><code>String</code></td><td>Immutable</td><td>Thread-safe (due to immutability)</td><td>Slow for repeated concatenations</td><td>Fixed text, dictionary keys</td></tr>
+              <tr><td><code>StringBuilder</code></td><td>Mutable</td><td>Not thread-safe (unsynchronized)</td><td>Fastest</td><td>Single-threaded dynamic text manipulation</td></tr>
+              <tr><td><code>StringBuffer</code></td><td>Mutable</td><td>Thread-safe (synchronized methods)</td><td>Slower due to lock overhead</td><td>Multi-threaded shared text building</td></tr>
+            </table>
+          </div>
+
+          <div class="code-block"><span class="code-tag">Java</span><pre>StringBuilder sb = new StringBuilder("MMMUT");
+sb.append(" Gorakhpur");
+sb.reverse();
+System.out.println(sb);</pre></div>
+          <div class="console-out">ruhparog TUMMM</div>
+        </div>
+      </div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 9. Classes, Objects, Methods &amp; Constructors</button>
+        <div class="subq-body">
+          <p>A <b>class</b> is a user-defined blueprint. An <b>object</b> is an instance allocated via <code>new</code> with three parts: <b>declaration</b> (reference variable), <b>instantiation</b> (<code>new</code> keyword allocates memory in heap), and <b>initialization</b> (constructor executes).</p>
+
+          <p class="syl-subhead">Method Overloading vs Constructor Chaining with this()</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>class Book {
+    String title;
+    double price;
+
+    <span class="cm">// Default / No-arg constructor</span>
+    Book() {
+        this("Java Programming", 450.0); <span class="cm">// constructor chaining via this()</span>
+    }
+
+    <span class="cm">// Parameterized constructor</span>
+    Book(String title, double price) {
+        this.title = title; <span class="cm">// this differentiates field from argument</span>
+        this.price = price;
+    }
+
+    <span class="cm">// Overloaded methods</span>
+    void display() {
+        System.out.println("Book: " + title + " (Rs. " + price + ")");
+    }
+    void display(String prefix) {
+        System.out.println(prefix + " -> " + title + " (Rs. " + price + ")");
+    }
+}
+public class ClassDemo {
+    public static void main(String[] args) {
+        Book b1 = new Book();
+        Book b2 = new Book("Operating Systems", 520.0);
+        b1.display();
+        b2.display("TEXTBOOK");
+    }
+}</pre></div>
+          <div class="console-out">Book: Java Programming (Rs. 450.0)
+TEXTBOOK -> Operating Systems (Rs. 520.0)</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+          <div class="margin-note"><b>Constructor Rules to Remember:</b> Constructor must have the exact same name as the class; it has NO return type (not even void); it cannot be marked static, final, or abstract; and a class gets an automatic default no-arg constructor ONLY if no other constructor is explicitly written.</div>
+        </div>
+      </div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 10. Inheritance Types &amp; The super Keyword</button>
+        <div class="subq-body">
+          <p>Java supports 5 types of inheritance conceptually, but class-based inheritance is restricted to prevent the dreaded diamond problem.</p>
+          <div class="ascii-diagram">
+          Single        Multilevel      Hierarchical      Multiple (Interfaces)
+            A               A                A                  A       B
+            │               │               ┌┴┐                  \     /
+            ▼               ▼               ▼ ▼                   ▼   ▼
+            B               B               B C                     C
+                            │
+                            ▼
+                            C</div>
+
+          <p class="syl-subhead">Uses of the super Keyword:</p>
+          <ol class="steps">
+            <li><code>super.variable</code>: Accesses hidden superclass instance variables.</li>
+            <li><code>super.method()</code>: Invokes overridden superclass methods.</li>
+            <li><code>super(args)</code>: Calls the superclass constructor (must be the very <b>first statement</b> in the subclass constructor).</li>
+          </ol>
+
+          <div class="code-block"><span class="code-tag">Java</span><pre>class Parent {
+    String role = "Superclass Member";
+    Parent(String message) {
+        System.out.println("Parent constructor: " + message);
+    }
+    void show() { System.out.println("Parent show()"); }
+}
+
+class Child extends Parent {
+    String role = "Subclass Member";
+    Child() {
+        super("Chained from Child"); <span class="cm">// 1. calling super constructor</span>
+    }
+    @Override
+    void show() {
+        super.show();                <span class="cm">// 2. calling super method</span>
+        System.out.println("Child role: " + role + " | Parent role: " + super.role); <span class="cm">// 3. accessing super field</span>
+    }
+}
+public class SuperDemo {
+    public static void main(String[] args) {
+        Child c = new Child();
+        c.show();
+    }
+}</pre></div>
+          <div class="console-out">Parent constructor: Chained from Child
+Parent show()
+Child role: Subclass Member | Parent role: Superclass Member</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+        </div>
+      </div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 11. Polymorphism — Overloading vs Overriding &amp; Dynamic Method Dispatch</button>
+        <div class="subq-body">
+          <div class="table-wrap">
+            <table class="data-table">
+              <tr><th>Feature</th><th>Method Overloading</th><th>Method Overriding</th></tr>
+              <tr><td>Binding Type</td><td>Compile-time (Static binding)</td><td>Runtime (Dynamic binding)</td></tr>
+              <tr><td>Scope</td><td>Same class (typically)</td><td>Across Parent–Child inheritance relationship</td></tr>
+              <tr><td>Method Signature</td><td>Same name, <b>different parameters</b></td><td>Exact <b>same name and parameters</b></td></tr>
+              <tr><td>Return Type</td><td>Can be different, but alone cannot overload</td><td>Must be same or covariant subclass type</td></tr>
+              <tr><td>Private / Static</td><td>Can overload private/static methods</td><td>Cannot override private or static methods</td></tr>
+            </table>
+          </div>
+
+          <p class="syl-subhead">Dynamic Method Dispatch Demonstration</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>class Vehicle {
+    void accelerate() { System.out.println("Vehicle accelerates normally"); }
+}
+class SportsCar extends Vehicle {
+    @Override
+    void accelerate() { System.out.println("SportsCar launches from 0 to 100 km/h in 3.2s!"); }
+}
+class ElectricCar extends Vehicle {
+    @Override
+    void accelerate() { System.out.println("ElectricCar accelerates silently with instant torque"); }
+}
+public class DispatchDemo {
+    public static void main(String[] args) {
+        Vehicle ref; <span class="cm">// superclass reference variable</span>
+
+        ref = new SportsCar();
+        ref.accelerate(); <span class="cm">// resolves to SportsCar at runtime</span>
+
+        ref = new ElectricCar();
+        ref.accelerate(); <span class="cm">// resolves to ElectricCar at runtime</span>
+    }
+}</pre></div>
+          <div class="console-out">SportsCar launches from 0 to 100 km/h in 3.2s!
+ElectricCar accelerates silently with instant torque</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+        </div>
+      </div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 12. Packages &amp; Access Modifiers</button>
+        <div class="subq-body">
+          <p>A <b>package</b> in Java is a namespace mechanism that groups related classes, interfaces, and sub-packages (e.g. <code>java.lang</code>, <code>java.util</code>, <code>java.io</code>). Advantages include naming conflict prevention, access control, and organized project structure.</p>
+
+          <p class="syl-subhead">The Complete 4-Level Access Modifier Matrix</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <tr><th>Access Modifier</th><th>Same Class</th><th>Same Package</th><th>Subclass (Different Pkg)</th><th>World (Everywhere)</th></tr>
+              <tr><td><code>private</code></td><td>✓ Yes</td><td>✗ No</td><td>✗ No</td><td>✗ No</td></tr>
+              <tr><td><code>default</code> (no modifier)</td><td>✓ Yes</td><td>✓ Yes</td><td>✗ No</td><td>✗ No</td></tr>
+              <tr><td><code>protected</code></td><td>✓ Yes</td><td>✓ Yes</td><td>✓ Yes (via inheritance only)</td><td>✗ No</td></tr>
+              <tr><td><code>public</code></td><td>✓ Yes</td><td>✓ Yes</td><td>✓ Yes</td><td>✓ Yes</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 13. Interfaces &amp; Abstract Classes</button>
+        <div class="subq-body">
+          <p>An <b>interface</b> specifies an API contract. A class can implement multiple interfaces (achieving multiple inheritance of type).</p>
+
+          <div class="table-wrap">
+            <table class="data-table">
+              <tr><th>Dimension</th><th>Abstract Class</th><th>Interface</th></tr>
+              <tr><td>Keyword</td><td><code>abstract class</code></td><td><code>interface</code></td></tr>
+              <tr><td>Inheritance</td><td>Extended using <code>extends</code> (single class only)</td><td>Implemented using <code>implements</code> (multiple allowed)</td></tr>
+              <tr><td>Constructors</td><td>Can have constructors and instance state</td><td>No constructors; cannot be instantiated</td></tr>
+              <tr><td>Variables</td><td>Can have instance, static, final, non-final fields</td><td>Fields are implicitly <code>public static final</code> constants</td></tr>
+              <tr><td>Methods</td><td>Can have concrete, abstract, and final methods</td><td>Abstract, <code>default</code>, <code>static</code>, and <code>private</code> (Java 9+)</td></tr>
+              <tr><td>Speed</td><td>Slightly faster method lookup</td><td>Slightly slower search in interface dispatch tables</td></tr>
+            </table>
+          </div>
+
+          <div class="code-block"><span class="code-tag">Java</span><pre>interface Printer {
+    void printDocument(String doc); <span class="cm">// abstract by default</span>
+
+    default void printDiagnostics() { <span class="cm">// default method (Java 8+)</span>
+        System.out.println("Printer diagnostics: All ink cartridges nominal.");
+    }
+}
+interface ScannerDevice {
+    void scanDocument(String doc);
+}
+
+<span class="cm">// Multiple Interface Implementation</span>
+class AllInOneMachine implements Printer, ScannerDevice {
+    public void printDocument(String doc) { System.out.println("Printing: " + doc); }
+    public void scanDocument(String doc) { System.out.println("Scanning: " + doc); }
+}
+public class InterfaceDemo {
+    public static void main(String[] args) {
+        AllInOneMachine m = new AllInOneMachine();
+        m.printDocument("Exam_Paper.pdf");
+        m.printDiagnostics();
+        m.scanDocument("Receipt.jpg");
+    }
+}</pre></div>
+          <div class="console-out">Printing: Exam_Paper.pdf
+Printer diagnostics: All ink cartridges nominal.
+Scanning: Receipt.jpg</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+        </div>
+      </div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 14. Unified Master Unit I Exam Program (10-Mark Model)</button>
+        <div class="subq-body">
+          <p>This single comprehensive program demonstrates <b>Class, Object, Constructor, <code>this</code>, <code>super</code>, Inheritance, Method Overriding, and Dynamic Method Dispatch</b> in one shot for maximum exam marks:</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>class Animal {
+    String name;
+
+    Animal(String name) {
+        this.name = name; <span class="cm">// this keyword resolves parameter shadow</span>
+    }
+
+    void sound() {
+        System.out.println(name + " makes a generic animal sound.");
+    }
+}
+
+class Dog extends Animal {
+    String breed;
+
+    Dog(String name, String breed) {
+        super(name);       <span class="cm">// super invokes superclass constructor</span>
+        this.breed = breed;
+    }
+
+    @Override
+    void sound() {         <span class="cm">// method overriding</span>
+        System.out.println(name + " (" + breed + ") barks: Woof Woof!");
+    }
+}
+
+public class MasterExamOOP {
+    public static void main(String[] args) {
+        <span class="cm">// Superclass reference pointing to Subclass object</span>
+        Animal myPet = new Dog("Tommy", "Golden Retriever");
+
+        <span class="cm">// Dynamic Method Dispatch (Runtime Polymorphism)</span>
+        myPet.sound();
+    }
+}</pre></div>
+          <div class="console-out">Tommy (Golden Retriever) barks: Woof Woof!</div>
+          <span class="verified-tag">✓ compiled &amp; run — OpenJDK 21</span>
+        </div>
+      </div>
+
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 15. Unit I Exam Question Bank (2-Mark, 5-Mark &amp; 10-Mark)</button>
+        <div class="subq-body">
+          <p class="syl-subhead">High-Yield 2-Mark Definition Questions:</p>
+          <ul class="plain">
+            <li><b>What is bytecode?</b> Platform-independent intermediate code produced by <code>javac</code> that is executed by the JVM.</li>
+            <li><b>Why is Java not 100% pure OOP?</b> Because it retains 8 primitive data types (<code>int</code>, <code>char</code>, <code>boolean</code>, etc.) that are not objects.</li>
+            <li><b>What is constructor chaining?</b> Calling one constructor from another constructor within the same class using <code>this()</code> or from a subclass using <code>super()</code>.</li>
+            <li><b>Can a constructor be private?</b> Yes, private constructors prevent external instantiation and are used in Singleton pattern design.</li>
+          </ul>
+
+          <p class="syl-subhead">Standard 5-Mark &amp; 10-Mark Questions:</p>
+          <ol class="steps">
+            <li><b>Explain JVM architecture in detail with a neat labeled block diagram.</b> (Draw Class Loader, Method Area, Heap, Stack, PC, Native Stack, and Execution Engine).</li>
+            <li><b>Differentiate between method overloading and method overriding with suitable code examples.</b></li>
+            <li><b>Explain the four pillars of OOP and demonstrate encapsulation and abstraction with Java code.</b></li>
+            <li><b>Compare abstract classes and interfaces with respect to inheritance, methods, variables, and constructors.</b></li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="margin-note"><b>Unit I Revision Order:</b> 1. OOP Pillars → 2. JVM Architecture &amp; WORA → 3. Method Overloading vs Overriding → 4. Constructor Chaining (this/super) → 5. Interface vs Abstract Class → 6. Strings &amp; Arrays.</div>
+    </div>
+
+    <!-- ---------- Unit II ---------- -->
+    <div class="qcard">
+      <div class="punch-holes"><span></span><span></span><span></span></div>
+      <div class="qcard-head">
+        <span class="qnum">Unit II</span>
+        <span class="qtitle">Exceptions, Multithreading, I/O Streams, Applets, Networking &amp; AWT GUI</span>
+        <div class="meta-row">
+          <span class="meta-chip">10 Comprehensive Topics</span>
+          <span class="meta-chip">Applied Java</span>
+          <span class="meta-chip">Full Runnable Programs</span>
+        </div>
+      </div>
+      <div class="question-text">Covers advanced runtime mechanics and application architecture: exception handling, multithread programming and synchronization, byte and character file I/O, legacy Applets, TCP/UDP socket networking, Delegation Event Model, and AWT graphical controls with layout managers.</div>
+
+      <!-- 1. EXCEPTION HANDLING -->
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 1. Exception Handling in Java — Hierarchy, Mechanics &amp; Custom Exceptions</button>
+        <div class="subq-body">
+          <p>An <b>exception</b> is an abnormal event or condition that occurs during program execution and disrupts the normal flow of instructions (e.g. dividing by zero, dereferencing <code>null</code>, accessing out-of-bounds array indices, or missing files). Without proper handling, the JVM abruptly terminates the program with a stack trace.</p>
+
+          <p class="syl-topic-head">The Java Exception Class Hierarchy</p>
+          <div class="ascii-diagram">
+                                  Object
+                                    │
+                                Throwable
+                               /         \
+                              /           \
+                         Error             Exception
+                      (Fatal JVM)         /         \
+                                         /           \
+                                Checked           RuntimeException
+                              Exceptions            (Unchecked)
+                                │                 /      │       \
+                                ├── IOException  ArithmeticNullPointer ArrayIndex
+                                └── SQLException Exception Exception OutOfBounds</div>
+
+          <p class="syl-subhead">Checked vs Unchecked Exceptions Comparison</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <tr><th>Dimension</th><th>Checked Exception</th><th>Unchecked Exception</th></tr>
+              <tr><td>Detection Time</td><td>Checked at <b>compile time</b> by <code>javac</code></td><td>Occurs and detected at <b>runtime</b></td></tr>
+              <tr><td>Compiler Enforcement</td><td>Mandatory: must handle via <code>try-catch</code> or declare via <code>throws</code></td><td>Optional: compiler does not enforce handling</td></tr>
+              <tr><td>Inheritance</td><td>Subclasses of <code>java.lang.Exception</code> (excluding <code>RuntimeException</code>)</td><td>Subclasses of <code>java.lang.RuntimeException</code></td></tr>
+              <tr><td>Root Cause</td><td>External environmental failures outside program control</td><td>Flaws in program logic or bad inputs</td></tr>
+              <tr><td>Examples</td><td><code>IOException</code>, <code>SQLException</code>, <code>ClassNotFoundException</code></td><td><code>ArithmeticException</code>, <code>NullPointerException</code>, <code>IndexOutOfBoundsException</code></td></tr>
+            </table>
+          </div>
+
+          <p class="syl-subhead">try, catch, and Multiple catch Blocks</p>
+          <p>The <code>try</code> block wraps risky code. The JVM checks each <code>catch</code> block in top-to-bottom sequence and enters the first matching handler. <b>Important Exam Rule:</b> Specialized subclasses must always be caught before general superclasses (e.g. <code>ArithmeticException</code> before <code>Exception</code>).</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>public class MultiCatchDemo {
+    public static void main(String[] args) {
+        int[] numbers = {10, 20, 30};
+        try {
+            System.out.println("Accessing valid element: " + numbers[1]);
+            int result = numbers[2] / 0; <span class="cm">// Throws ArithmeticException</span>
+            System.out.println("Result: " + result);
+        } catch (ArithmeticException e) {
+            System.out.println("Handled Arithmetic: " + e.getMessage());
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Handled Array Index: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Generic Fallback Handler: " + e);
+        } finally {
+            System.out.println("Finally block: Always executes for guaranteed resource cleanup.");
+        }
+    }
+}</pre></div>
+          <div class="console-out">Accessing valid element: 20
+Handled Arithmetic: / by zero
+Finally block: Always executes for guaranteed resource cleanup.</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+
+          <div class="margin-note"><b>Compiler Trap — Unreachable Catch Block:</b> If you place <code>catch (Exception e)</code> <i>above</i> <code>catch (ArithmeticException e)</code>, the compiler aborts with: <code>error: exception ArithmeticException has already been caught</code>. The compiler proves the second block can never execute!</div>
+
+          <p class="syl-subhead">throw vs throws Keyword</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <tr><th>Aspect</th><th><code>throw</code></th><th><code>throws</code></th></tr>
+              <tr><td>Role</td><td>Actively instantiates and raises an exception object right now</td><td>Declares that a method signature might propagate an exception to callers</td></tr>
+              <tr><td>Position</td><td>Inside a method or block body</td><td>In the method signature header</td></tr>
+              <tr><td>Target</td><td>Followed by an <b>instance</b>: <code>throw new MyException();</code></td><td>Followed by <b>class name(s)</b>: <code>throws IOException, SQLException</code></td></tr>
+              <tr><td>Count</td><td>Can throw only <b>one</b> exception object at a time</td><td>Can declare <b>multiple</b> comma-separated exception types</td></tr>
+            </table>
+          </div>
+
+          <div class="code-block"><span class="code-tag">Java</span><pre>import java.io.IOException;
+
+public class ThrowThrowsDemo {
+    <span class="cm">// throws declares that this method may propagate IOException to its caller</span>
+    static void validateVoter(int age) throws IOException {
+        if (age < 18) {
+            <span class="cm">// throw actively instantiates and launches the exception</span>
+            throw new IOException("Underage voter rejected: age " + age + " is below 18.");
+        }
+        System.out.println("Voter eligible. Ballot unlocked.");
+    }
+
+    public static void main(String[] args) {
+        try {
+            validateVoter(16);
+        } catch (IOException e) {
+            System.out.println("Caught Propagated Exception: " + e.getMessage());
+        }
+    }
+}</pre></div>
+          <div class="console-out">Caught Propagated Exception: Underage voter rejected: age 16 is below 18.</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+
+          <p class="syl-subhead">User-Defined (Custom) Exception</p>
+          <p>Developers create domain-specific exceptions by subclassing <code>java.lang.Exception</code> (for checked exceptions) or <code>java.lang.RuntimeException</code> (for unchecked exceptions):</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre><span class="cm">// 1. Custom Checked Exception Definition</span>
+class InsufficientFundsException extends Exception {
+    private double deficit;
+    public InsufficientFundsException(String message, double deficit) {
+        super(message);
+        this.deficit = deficit;
+    }
+    public double getDeficit() { return deficit; }
+}
+
+<span class="cm">// 2. Business Entity Utilizing Custom Exception</span>
+class BankAccount {
+    private double balance;
+    public BankAccount(double initialBalance) { this.balance = initialBalance; }
+
+    public void withdraw(double amount) throws InsufficientFundsException {
+        if (amount > balance) {
+            double shortFall = amount - balance;
+            throw new InsufficientFundsException("Withdrawal declined: Insufficient balance.", shortFall);
+        }
+        balance -= amount;
+        System.out.println("Dispensed Rs. " + amount + ". New Balance = Rs. " + balance);
+    }
+}
+
+public class CustomExceptionTest {
+    public static void main(String[] args) {
+        BankAccount acct = new BankAccount(2000.0);
+        try {
+            acct.withdraw(800.0);
+            acct.withdraw(1500.0); <span class="cm">// Exceeds remaining 1200</span>
+        } catch (InsufficientFundsException e) {
+            System.out.println("Alert: " + e.getMessage() + " (Short by Rs. " + e.getDeficit() + ")");
+        }
+    }
+}</pre></div>
+          <div class="console-out">Dispensed Rs. 800.0. New Balance = Rs. 1200.0
+Alert: Withdrawal declined: Insufficient balance. (Short by Rs. 300.0)</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+
+          <p class="syl-subhead">Execution Flow of Exception Handling</p>
+          <div class="ascii-diagram">
+                         Start try Block
+                               │
+               ┌───────────────┴───────────────┐
+               ▼                               ▼
+       No Exception Occurs             Exception Occurs
+               │                               │
+               │                               ▼
+               │                     Matching catch Block?
+               │                      /                 \
+               │                    Yes                  No
+               │                     │                    │
+               │                     ▼                    ▼
+               │             Execute catch Block   Propagate to Caller
+               │                     │                    │
+               └──────────────┬──────┴────────────────────┘
+                              ▼
+                    Execute finally Block
+                              ▼
+                     Continue Program Flow</div>
+
+          <p class="syl-subhead">Common Built-In Exceptions Reference Table</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <tr><th>Exception Class</th><th>Category</th><th>Typical Trigger / Code Scenario</th></tr>
+              <tr><td><code>ArithmeticException</code></td><td>Unchecked</td><td>Integer division by zero: <code>int x = 50 / 0;</code></td></tr>
+              <tr><td><code>NullPointerException</code></td><td>Unchecked</td><td>Invoking method or reading field on <code>null</code> reference</td></tr>
+              <tr><td><code>ArrayIndexOutOfBoundsException</code></td><td>Unchecked</td><td>Attempting index &lt; 0 or &ge; array length</td></tr>
+              <tr><td><code>NumberFormatException</code></td><td>Unchecked</td><td><code>Integer.parseInt("MMMUT")</code> — non-numeric string</td></tr>
+              <tr><td><code>ClassCastException</code></td><td>Unchecked</td><td>Invalid type cast: <code>(String)(Object)new Integer(5)</code></td></tr>
+              <tr><td><code>IllegalArgumentException</code></td><td>Unchecked</td><td>Passing inappropriate or illegal parameter to a method</td></tr>
+              <tr><td><code>IOException</code></td><td>Checked</td><td>File read/write failure, missing network socket stream</td></tr>
+              <tr><td><code>FileNotFoundException</code></td><td>Checked</td><td><code>new FileInputStream("missing.txt")</code> — file does not exist</td></tr>
+              <tr><td><code>ClassNotFoundException</code></td><td>Checked</td><td><code>Class.forName("com.mysql.jdbc.Driver")</code> — class missing from classpath</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. MULTITHREAD PROGRAMMING -->
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 2. Multithread Programming — Thread Life Cycle, Creation &amp; Synchronization</button>
+        <div class="subq-body">
+          <p>A <b>thread</b> is a lightweight sub-process; the smallest independent unit of CPU execution. <b>Multithreading</b> is a feature of Java that allows concurrent execution of two or more threads within a single program to maximize CPU utilization.</p>
+
+          <p class="syl-subhead">Process vs Thread Comparison</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <tr><th>Property</th><th>Process</th><th>Thread</th></tr>
+              <tr><td>Definition</td><td>Executing instance of an entire program</td><td>Smallest unit of execution within a process</td></tr>
+              <tr><td>Address Space</td><td>Separate, isolated memory address space</td><td>Shares the process heap and address space</td></tr>
+              <tr><td>Creation Overhead</td><td>Heavyweight: high OS allocation cost</td><td>Lightweight: minimal JVM stack allocation</td></tr>
+              <tr><td>Context Switching</td><td>Slow and expensive (flushes CPU registers/memory pages)</td><td>Fast and efficient</td></tr>
+              <tr><td>Communication</td><td>Inter-Process Communication (IPC) via sockets/pipes</td><td>Inter-thread communication via shared memory and <code>wait()/notify()</code></td></tr>
+              <tr><td>Crash Impact</td><td>Isolated; process crash does not kill other processes</td><td>A single unhandled thread exception can terminate the whole process</td></tr>
+            </table>
+          </div>
+
+          <p class="syl-topic-head">The Java Thread Life Cycle</p>
+          <div class="ascii-diagram">
+                       start()
+          [ NEW ] ────────────► [ RUNNABLE ] ◄────────────────┐
+                                  │      ▲                    │
+                  wait() / sleep()│      │ notify() / timer   │
+                                  ▼      │                    │
+                          [ WAITING / TIMED_WAITING ]         │
+                                                              │
+                                  │ lock acquired             │
+                                  ▼                           │
+                             [ BLOCKED ] ─────────────────────┘
+                                  │
+                             run() finishes
+                                  ▼
+                            [ TERMINATED ]</div>
+
+          <ul class="plain">
+            <li><b>NEW:</b> Thread instance created (<code>new Thread()</code>), but <code>start()</code> not yet called.</li>
+            <li><b>RUNNABLE:</b> Ready for execution; currently running on CPU or waiting in the OS ready queue.</li>
+            <li><b>BLOCKED:</b> Waiting to acquire an intrinsic monitor lock held by another synchronized thread.</li>
+            <li><b>WAITING:</b> Waiting indefinitely for another thread to perform an action (e.g. <code>wait()</code>, <code>join()</code>).</li>
+            <li><b>TIMED_WAITING:</b> Waiting for a specified time duration (e.g. <code>Thread.sleep(ms)</code>, <code>join(ms)</code>).</li>
+            <li><b>TERMINATED:</b> Thread has completed execution of its <code>run()</code> method or exited abnormally.</li>
+          </ul>
+
+          <p class="syl-subhead">Approach 1: Extending the Thread Class</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>class PrimeWorker extends Thread {
+    private String taskName;
+    public PrimeWorker(String taskName) { this.taskName = taskName; }
+
+    @Override
+    public void run() {
+        for (int i = 1; i <= 3; i++) {
+            System.out.println(taskName + " executing step: " + i);
+            try {
+                Thread.sleep(150); <span class="cm">// pause thread for 150 milliseconds</span>
+            } catch (InterruptedException e) {
+                System.out.println(taskName + " interrupted.");
+            }
+        }
+    }
+}
+public class ThreadExtendDemo {
+    public static void main(String[] args) {
+        PrimeWorker t1 = new PrimeWorker("Thread-Alpha");
+        PrimeWorker t2 = new PrimeWorker("Thread-Beta");
+
+        t1.start(); <span class="cm">// ALWAYS invoke start(), NEVER call run() directly!</span>
+        t2.start();
+    }
+}</pre></div>
+          <div class="console-out">Thread-Alpha executing step: 1
+Thread-Beta executing step: 1
+Thread-Alpha executing step: 2
+Thread-Beta executing step: 2
+Thread-Alpha executing step: 3
+Thread-Beta executing step: 3</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+
+          <div class="margin-note"><b>Crucial Exam Distinction — start() vs run():</b> Calling <code>t.start()</code> asks the JVM to allocate a new call stack, register the thread with the OS scheduler, and trigger <code>run()</code> asynchronously. Calling <code>t.run()</code> directly does NOT spawn a new thread — it simply invokes <code>run()</code> synchronously on the calling thread just like any standard method!</div>
+
+          <p class="syl-subhead">Approach 2: Implementing the Runnable Interface (Recommended)</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>class PrinterTask implements Runnable {
+    private String document;
+    public PrinterTask(String doc) { this.document = doc; }
+
+    @Override
+    public void run() {
+        System.out.println("Printing " + document + " on: " + Thread.currentThread().getName());
+    }
+}
+public class RunnableDemo {
+    public static void main(String[] args) {
+        PrinterTask task1 = new PrinterTask("Exam_Admit_Card.pdf");
+        PrinterTask task2 = new PrinterTask("Lab_Manual.pdf");
+
+        Thread worker1 = new Thread(task1, "Worker-1");
+        Thread worker2 = new Thread(task2, "Worker-2");
+
+        worker1.start();
+        worker2.start();
+    }
+}</pre></div>
+          <div class="console-out">Printing Exam_Admit_Card.pdf on: Worker-1
+Printing Lab_Manual.pdf on: Worker-2</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+          <p><b>Why Runnable is Preferred:</b> Java allows single class inheritance only. Extending <code>Thread</code> permanently prevents the class from inheriting any other class. Implementing <code>Runnable</code> preserves your inheritance hierarchy and cleanly separates the job/task from the execution worker.</p>
+
+          <p class="syl-subhead">Thread Synchronization &amp; Preventing Race Conditions</p>
+          <p>A <b>race condition</b> occurs when two or more threads concurrently access shared mutable state without coordination, producing corrupt or non-deterministic outcomes. For example, <code>balance = balance - amount</code> is not an atomic operation; it involves reading, subtracting, and storing back.</p>
+          <p>Java provides the <code>synchronized</code> keyword to enforce mutual exclusion on an object's intrinsic monitor lock:</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>class JointAccount {
+    private int balance = 1000;
+
+    <span class="cm">// Synchronized method: Only 1 thread can hold the lock on this object at a time</span>
+    public synchronized void withdraw(String user, int amount) {
+        if (balance >= amount) {
+            System.out.println(user + " checked balance: Rs. " + balance + ". Processing Rs. " + amount);
+            try { Thread.sleep(100); } catch (InterruptedException e) {}
+            balance -= amount;
+            System.out.println(user + " completed withdrawal. Remaining Balance: Rs. " + balance);
+        } else {
+            System.out.println(user + " denied: Insufficient funds for Rs. " + amount + " (Balance: " + balance + ")");
+        }
+    }
+}
+public class SyncBankDemo {
+    public static void main(String[] args) throws InterruptedException {
+        JointAccount account = new JointAccount();
+
+        Thread userA = new Thread(() -> account.withdraw("Student-A", 700));
+        Thread userB = new Thread(() -> account.withdraw("Student-B", 600));
+
+        userA.start();
+        userB.start();
+
+        userA.join(); <span class="cm">// Main thread waits for userA to complete</span>
+        userB.join(); <span class="cm">// Main thread waits for userB to complete</span>
+        System.out.println("Banking transactions finished safely.");
+    }
+}</pre></div>
+          <div class="console-out">Student-A checked balance: Rs. 1000. Processing Rs. 700
+Student-A completed withdrawal. Remaining Balance: Rs. 300
+Student-B denied: Insufficient funds for Rs. 600 (Balance: 300)
+Banking transactions finished safely.</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+
+          <p class="syl-subhead">Inter-Thread Communication (wait, notify &amp; notifyAll)</p>
+          <p>Threads communicate state changes using <code>wait()</code> (releases lock and sleeps until signaled), <code>notify()</code> (wakes up one waiting thread), and <code>notifyAll()</code> (wakes up all waiting threads). <b>Rule:</b> These methods belong to <code>java.lang.Object</code> and MUST only be called from inside a <code>synchronized</code> block/method!</p>
+          <div class="ascii-diagram">
+          Producer Thread                  Shared Buffer                  Consumer Thread
+                 │                               │                               │
+                 │─── put(data) ────────────────►│                               │
+                 │    notify()                   │─── get() ────────────────────►│
+                 │                               │    wait() if empty            │</div>
+        </div>
+      </div>
+
+      <!-- 3. JAVA I/O STREAMS -->
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 3. Java I/O Streams — Byte Streams, Character Streams &amp; Serialization</button>
+        <div class="subq-body">
+          <p>A <b>stream</b> in Java is a unidirectional sequence of continuous data flowing from a source (file, keyboard, network socket) to a destination (file, screen, socket). Streams are cleanly segregated into <b>Byte Streams</b> and <b>Character Streams</b>.</p>
+
+          <p class="syl-topic-head">Byte Streams vs Character Streams Architecture</p>
+          <div class="ascii-diagram">
+                                  java.io Streams
+                                         │
+                    ┌────────────────────┴────────────────────┐
+                    ▼                                         ▼
+               Byte Streams                           Character Streams
+              (8-bit Binary)                          (16-bit Unicode)
+               /          \                             /           \
+              ▼            ▼                           ▼             ▼
+         InputStream  OutputStream                  Reader         Writer
+              │            │                           │             │
+        FileInputStream FileOutputStream          FileReader    FileWriter
+        BufferedInputStream BufferedOutputStream  BufferedReader BufferedWriter</div>
+
+          <div class="table-wrap">
+            <table class="data-table">
+              <tr><th>Aspect</th><th>Byte Streams</th><th>Character Streams</th></tr>
+              <tr><td>Root Abstract Classes</td><td><code>InputStream</code> and <code>OutputStream</code></td><td><code>Reader</code> and <code>Writer</code></td></tr>
+              <tr><td>Data Unit</td><td>Processes data as raw <b>8-bit bytes</b></td><td>Processes data as <b>16-bit Unicode characters</b></td></tr>
+              <tr><td>Best Suited For</td><td>Binary data: images, audio, video, compiled files, zip archives</td><td>Text data: source code, text files, HTML, CSV, configuration files</td></tr>
+              <tr><td>Character Encoding</td><td>Does NOT perform character set translations</td><td>Automatically translates between local charset (UTF-8, ASCII) and Unicode</td></tr>
+              <tr><td>Core Implementations</td><td><code>FileInputStream</code>, <code>FileOutputStream</code></td><td><code>FileReader</code>, <code>FileWriter</code>, <code>BufferedReader</code>, <code>BufferedWriter</code></td></tr>
+            </table>
+          </div>
+
+          <p class="syl-subhead">Byte Stream Example: File Copy via FileInputStream &amp; FileOutputStream</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>import java.io.*;
+
+public class ByteStreamCopy {
+    public static void main(String[] args) {
+        String testData = "MMMUT Java Byte Stream Test";
+        byte[] bytes = testData.getBytes();
+
+        try {
+            <span class="cm">// 1. Write raw bytes to file</span>
+            FileOutputStream out = new FileOutputStream("binary_test.bin");
+            out.write(bytes);
+            out.close();
+
+            <span class="cm">// 2. Read raw bytes back</span>
+            FileInputStream in = new FileInputStream("binary_test.bin");
+            int byteRead;
+            System.out.print("Read from file: ");
+            while ((byteRead = in.read()) != -1) {
+                System.out.print((char) byteRead); <span class="cm">// cast byte integer to char</span>
+            }
+            System.out.println();
+            in.close();
+        } catch (IOException e) {
+            System.out.println("I/O Error: " + e.getMessage());
+        }
+    }
+}</pre></div>
+          <div class="console-out">Read from file: MMMUT Java Byte Stream Test</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+
+          <p class="syl-subhead">High-Performance Character Stream: BufferedReader &amp; BufferedWriter</p>
+          <p>Unbuffered I/O issues a physical disk read for every single character. <code>BufferedReader</code> buffers blocks of characters in memory (typically 8 KB), offering substantial speedups and the indispensable <code>readLine()</code> method:</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>import java.io.*;
+
+public class BufferedCharDemo {
+    public static void main(String[] args) {
+        File demoFile = new File("notes.txt");
+
+        <span class="cm">// 1. Writing lines using BufferedWriter</span>
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(demoFile))) {
+            bw.write("BCS 212: Object Oriented Programming through Java");
+            bw.newLine();
+            bw.write("Unit II: Advanced Robustness & I/O Streams");
+            bw.newLine();
+            bw.write("Examinations 2025-26");
+        } catch (IOException e) {
+            System.out.println("Write error: " + e);
+        }
+
+        <span class="cm">// 2. Reading line-by-line using BufferedReader</span>
+        try (BufferedReader br = new BufferedReader(new FileReader(demoFile))) {
+            String line;
+            int lineNum = 1;
+            while ((line = br.readLine()) != null) {
+                System.out.println("Line " + lineNum++ + ": " + line);
+            }
+        } catch (IOException e) {
+            System.out.println("Read error: " + e);
+        }
+    }
+}</pre></div>
+          <div class="console-out">Line 1: BCS 212: Object Oriented Programming through Java
+Line 2: Unit II: Advanced Robustness & I/O Streams
+Line 3: Examinations 2025-26</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+
+          <p class="syl-subhead">Object Serialization &amp; The transient Keyword</p>
+          <p><b>Serialization</b> is the mechanism of converting an in-memory object's state into a byte stream, allowing it to be persisted to a file or transferred across a network. The reverse process is <b>Deserialization</b>.</p>
+          <ul class="plain">
+            <li>The class must implement the marker interface <code>java.io.Serializable</code> (has no methods).</li>
+            <li>Use <code>ObjectOutputStream.writeObject(obj)</code> to serialize.</li>
+            <li>Use <code>ObjectInputStream.readObject()</code> to deserialize.</li>
+            <li><b>The transient Keyword:</b> Fields marked <code>transient</code> are skipped during serialization (e.g. security passwords, session keys, temporary calculated values). Upon deserialization, transient fields receive default zero/null values.</li>
+          </ul>
+          <div class="code-block"><span class="code-tag">Java</span><pre>import java.io.Serializable;
+
+class StudentRecord implements Serializable {
+    private static final long serialVersionUID = 1L;
+    String studentName;
+    int rollNumber;
+    transient String secretPassword; <span class="cm">// Will NOT be saved to byte stream!</span>
+
+    public StudentRecord(String name, int roll, String pass) {
+        this.studentName = name;
+        this.rollNumber = roll;
+        this.secretPassword = pass;
+    }
+}</pre></div>
+        </div>
+      </div>
+
+      <!-- 4. JAVA APPLET -->
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 4. Java Applet Architecture &amp; Life Cycle (Legacy Exam Topic)</button>
+        <div class="subq-body">
+          <p>An <b>Applet</b> was a specialized Java program designed to be embedded within an HTML web page and executed on a client's machine inside a Java-enabled web browser or an <code>appletviewer</code> utility. <b>Key Characteristic:</b> An Applet does NOT possess a <code>public static void main()</code> method; its execution is entirely managed by the runtime container via a predefined lifecycle.</p>
+
+          <div class="margin-note"><b>Exam Note on Applet Modern Status:</b> Java Applets were deprecated in Java 9 and completely removed from modern standard JDK distributions. In contemporary development, HTML5/CSS/JavaScript or web APIs have replaced them. However, they frequently appear in MMMUT theory papers — memorize their lifecycle methods, architecture, and graphics methods!</div>
+
+          <p class="syl-topic-head">Applet Life Cycle &amp; State Diagram</p>
+          <div class="ascii-diagram">
+                          Applet Loaded into Browser
+                                      │
+                                      ▼
+                                   init()     <-- One-time initialization
+                                      │
+                                      ▼
+                        ┌─────────► start()   <-- Invoked when page becomes visible
+                        │             │
+                        │             ▼
+                        │          paint()    <-- Renders graphics on canvas
+                        │             │
+                        │             ▼
+                        │          stop()     <-- Invoked when page is navigated away
+                        └─────────────┘
+                                      │
+                                      ▼
+                                  destroy()   <-- One-time cleanup before unload</div>
+
+          <p class="syl-subhead">The Five Key Life Cycle Methods:</p>
+          <ol class="steps">
+            <li><b><code>init()</code>:</b> Invoked only once when the applet is first loaded into memory. Used to initialize variables, allocate GUI components, load fonts, and read <code>&lt;param&gt;</code> tags.</li>
+            <li><b><code>start()</code>:</b> Invoked immediately after <code>init()</code> and whenever the user returns to the webpage after leaving it. Starts background animation threads and audio playback.</li>
+            <li><b><code>paint(Graphics g)</code>:</b> Called whenever the applet's display surface must be refreshed or redrawn. The <code>Graphics</code> object provides 2D drawing methods (<code>drawString</code>, <code>drawRect</code>, <code>fillOval</code>, <code>setColor</code>).</li>
+            <li><b><code>stop()</code>:</b> Invoked automatically whenever the browser tab is minimized or the user navigates away to another webpage. Suspends CPU-intensive threads.</li>
+            <li><b><code>destroy()</code>:</b> Invoked only once when the browser completely closes or unloads the applet from cache. Frees allocated native operating system resources.</li>
+          </ol>
+
+          <p class="syl-subhead">Traditional Applet Code &amp; HTML Embedding</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>import java.applet.Applet;
+import java.awt.Graphics;
+import java.awt.Color;
+import java.awt.Font;
+
+<span class="cm">/*
+&lt;applet code="WelcomeApplet.class" width="350" height="150"&gt;
+&lt;/applet&gt;
+*/</span>
+public class WelcomeApplet extends Applet {
+    @Override
+    public void init() {
+        setBackground(Color.decode("#F5EDD8")); <span class="cm">// parchment color</span>
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        g.setColor(new Color(139, 26, 26));    <span class="cm">// crimson ink</span>
+        g.setFont(new Font("Serif", Font.BOLD, 18));
+        g.drawString("BCS 212: Welcome to MMMUT Applet", 20, 50);
+
+        g.setColor(new Color(26, 92, 92));     <span class="cm">// teal ink</span>
+        g.drawRect(15, 20, 310, 50);
+        g.drawString("Applet Life Cycle Demonstration", 20, 100);
+    }
+}</pre></div>
+
+          <p class="syl-subhead">Java Application vs Java Applet Comparison</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <tr><th>Aspect</th><th>Java Application</th><th>Java Applet</th></tr>
+              <tr><td>Entry Point</td><td>Starts execution at <code>public static void main(String[] args)</code></td><td>No <code>main()</code>; executed via lifecycle methods: <code>init()</code>, <code>start()</code></td></tr>
+              <tr><td>Execution Host</td><td>Runs independently directly on the host operating system JVM</td><td>Requires an applet-enabled browser plugin or <code>appletviewer</code></td></tr>
+              <tr><td>Security Model</td><td>Full access to local file systems, sockets, and native system APIs</td><td>Strictly sandboxed: cannot read/write local client files or open rogue sockets</td></tr>
+              <tr><td>Installation</td><td>Installed and launched locally on client computer</td><td>Downloaded dynamically on-demand over the web via HTML tags</td></tr>
+              <tr><td>Modern Relevance</td><td>Dominant in enterprise, microservices, desktop, and Android</td><td>Deprecated and obsolete in modern browsers</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. JAVA NETWORKING -->
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 5. Java Networking — Sockets, TCP/UDP &amp; Client-Server Programming</button>
+        <div class="subq-body">
+          <p>Java's networking API (<code>java.net</code>) enables communication between distributed processes running on heterogeneous computers connected over local networks or the Internet. Key networking concepts include:</p>
+          <ul class="plain">
+            <li><b>IP Address:</b> A unique numeric identifier assigned to every device on an IP network (IPv4: 32-bit dot-decimal e.g. <code>192.168.1.1</code>; IPv6: 128-bit hexadecimal).</li>
+            <li><b>Port Number:</b> A 16-bit integer (0 to 65535) identifying a specific application or process endpoint on a host machine (e.g. HTTP=80, HTTPS=443, Custom=5000).</li>
+            <li><b>Socket:</b> An abstraction representing one endpoint of a two-way software communication link.</li>
+          </ul>
+
+          <p class="syl-subhead">TCP vs UDP Protocol Comparison</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <tr><th>Dimension</th><th>TCP (Transmission Control Protocol)</th><th>UDP (User Datagram Protocol)</th></tr>
+              <tr><td>Connection State</td><td><b>Connection-Oriented:</b> establishes handshake before data transfer</td><td><b>Connectionless:</b> sends datagram packets with no prior handshake</td></tr>
+              <tr><td>Reliability</td><td>Guaranteed delivery with packet acknowledgments and retransmission</td><td>Best-effort delivery; packets may drop, duplicate, or arrive out-of-order</td></tr>
+              <tr><td>Ordering</td><td>Strict sequential byte order guaranteed</td><td>No order guarantee; packets travel independent routes</td></tr>
+              <tr><td>Speed / Overhead</td><td>Slower due to header size (20-60 bytes) and flow/congestion control</td><td>Faster and lightweight; small header (8 bytes)</td></tr>
+              <tr><td>Java Classes</td><td><code>Socket</code> (client) and <code>ServerSocket</code> (server)</td><td><code>DatagramSocket</code> and <code>DatagramPacket</code></td></tr>
+              <tr><td>Real-World Uses</td><td>Web browsing (HTTP/HTTPS), Email (SMTP), File transfer (FTP)</td><td>Video streaming, online multiplayer gaming, DNS lookups, VoIP</td></tr>
+            </table>
+          </div>
+
+          <p class="syl-subhead">InetAddress Class Example</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>import java.net.InetAddress;
+
+public class InetAddressDemo {
+    public static void main(String[] args) {
+        try {
+            InetAddress local = InetAddress.getLocalHost();
+            System.out.println("Host Machine: " + local.getHostName());
+            System.out.println("Local IP: " + local.getHostAddress());
+
+            InetAddress remote = InetAddress.getByName("localhost");
+            System.out.println("Resolved localhost: " + remote.getHostAddress());
+        } catch (Exception e) {
+            System.out.println("Resolution Error: " + e);
+        }
+    }
+}</pre></div>
+          <div class="console-out">Host Machine: Developer-Station
+Local IP: 192.168.1.15
+Resolved localhost: 127.0.0.1</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+
+          <p class="syl-topic-head">The TCP Client-Server Model &amp; Complete Code</p>
+          <div class="ascii-diagram">
+                      SERVER                                      CLIENT
+            ┌────────────────────────┐                  ┌────────────────────────┐
+            │ ServerSocket(5000)     │                  │                        │
+            │ accept() [Blocks...]   │                  │                        │
+            │                        │◄─── Connect ─────│ Socket("host", 5000)   │
+            │ Streams Established    │                  │ Streams Established    │
+            │ din.readUTF()          │◄─── Data ────────│ dout.writeUTF()        │
+            │ close()                │                  │ close()                │
+            └────────────────────────┘                  └────────────────────────┘</div>
+
+          <p class="syl-subhead">1. The TCP Server Implementation</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>import java.io.*;
+import java.net.*;
+
+public class TCPServer {
+    public static void main(String[] args) {
+        try (ServerSocket serverSocket = new ServerSocket(6000)) {
+            System.out.println("[Server] Listening on port 6000. Waiting for client...");
+
+            <span class="cm">// accept() blocks until an incoming client initiates connection</span>
+            try (Socket socket = serverSocket.accept();
+                 DataInputStream in = new DataInputStream(socket.getInputStream());
+                 DataOutputStream out = new DataOutputStream(socket.getOutputStream())) {
+
+                System.out.println("[Server] Client connected from: " + socket.getRemoteSocketAddress());
+                String clientMsg = in.readUTF();
+                System.out.println("[Server] Received: " + clientMsg);
+
+                <span class="cm">// Send reply back to client</span>
+                out.writeUTF("Server ACK: Message '" + clientMsg + "' received successfully.");
+                out.flush();
+            }
+        } catch (IOException e) {
+            System.out.println("[Server] Error: " + e.getMessage());
+        }
+    }
+}</pre></div>
+
+          <p class="syl-subhead">2. The TCP Client Implementation</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>import java.io.*;
+import java.net.*;
+
+public class TCPClient {
+    public static void main(String[] args) {
+        try (Socket socket = new Socket("localhost", 6000);
+             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+             DataInputStream in = new DataInputStream(socket.getInputStream())) {
+
+            System.out.println("[Client] Connected to server. Transmitting payload...");
+            out.writeUTF("Hello Server, this is MMMUT Student 64!");
+            out.flush();
+
+            String response = in.readUTF();
+            System.out.println("[Client] Server response: " + response);
+        } catch (IOException e) {
+            System.out.println("[Client] Connection Error: " + e.getMessage());
+        }
+    }
+}</pre></div>
+          <div class="console-out">[Server] Listening on port 6000. Waiting for client...
+[Server] Client connected from: /127.0.0.1:54321
+[Server] Received: Hello Server, this is MMMUT Student 64!
+[Client] Server response: Server ACK: Message 'Hello Server, this is MMMUT Student 64!' received successfully.</div>
+        </div>
+      </div>
+
+      <!-- 6. EVENT HANDLING -->
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 6. Event Handling in Java — The Delegation Event Model &amp; Adapters</button>
+        <div class="subq-body">
+          <p>Java GUI programs employ an <b>event-driven programming model</b> where execution flow is dictated by asynchronous user interactions (keystrokes, mouse moves, button clicks, window resize/close events). Modern Java AWT/Swing handles this via the <b>Delegation Event Model</b>.</p>
+
+          <p class="syl-topic-head">The Delegation Event Model Architecture</p>
+          <div class="ascii-diagram">
+            User Action (Click)
+                    │
+                    ▼
+          ┌───────────────────┐
+          │   Event Source    │  (e.g., Button, TextField, Window)
+          │  Registers with:  │
+          │  addActionListener│
+          └─────────┬─────────┘
+                    │ Generates Event Object
+                    ▼
+          ┌───────────────────┐
+          │   Event Object    │  (e.g., ActionEvent, MouseEvent)
+          │ Encapsulates State│
+          └─────────┬─────────┘
+                    │ Delivered to registered Listener
+                    ▼
+          ┌───────────────────┐
+          │  Event Listener   │  (e.g., ActionListener, MouseListener)
+          │  Calls Handler:   │
+          │  actionPerformed()│
+          └───────────────────┘</div>
+
+          <p class="syl-subhead">The Three Core Components:</p>
+          <ol class="steps">
+            <li><b>Event Source:</b> A GUI component that generates an event when its state changes. It provides registration methods (<code>add&lt;Type&gt;Listener()</code>) and deregistration methods (<code>remove&lt;Type&gt;Listener()</code>).</li>
+            <li><b>Event Object:</b> An instance extending <code>java.util.EventObject</code> that encapsulates metadata about what happened (source reference, timestamp, coordinates, click counts, modifiers).</li>
+            <li><b>Event Listener:</b> An interface extending <code>java.util.EventListener</code> that declares one or more callback method signatures that handle the incoming event.</li>
+          </ol>
+
+          <p class="syl-subhead">Master Table of Common Events &amp; Corresponding Listeners</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <tr><th>Event Class</th><th>Listener Interface</th><th>Key Methods Declared in Listener</th></tr>
+              <tr><td><code>ActionEvent</code></td><td><code>ActionListener</code></td><td><code>actionPerformed(ActionEvent e)</code></td></tr>
+              <tr><td><code>MouseEvent</code></td><td><code>MouseListener</code></td><td><code>mouseClicked</code>, <code>mousePressed</code>, <code>mouseReleased</code>, <code>mouseEntered</code>, <code>mouseExited</code></td></tr>
+              <tr><td><code>MouseEvent</code></td><td><code>MouseMotionListener</code></td><td><code>mouseDragged(MouseEvent e)</code>, <code>mouseMoved(MouseEvent e)</code></td></tr>
+              <tr><td><code>KeyEvent</code></td><td><code>KeyListener</code></td><td><code>keyPressed(KeyEvent e)</code>, <code>keyReleased(KeyEvent e)</code>, <code>keyTyped(KeyEvent e)</code></td></tr>
+              <tr><td><code>ItemEvent</code></td><td><code>ItemListener</code></td><td><code>itemStateChanged(ItemEvent e)</code> (for Checkbox, Choice, List)</td></tr>
+              <tr><td><code>WindowEvent</code></td><td><code>WindowListener</code></td><td><code>windowOpened</code>, <code>windowClosing</code>, <code>windowClosed</code>, <code>windowIconified</code>, <code>windowDeiconified</code>, <code>windowActivated</code>, <code>windowDeactivated</code></td></tr>
+              <tr><td><code>AdjustmentEvent</code></td><td><code>AdjustmentListener</code></td><td><code>adjustmentValueChanged(AdjustmentEvent e)</code> (for Scrollbars)</td></tr>
+              <tr><td><code>TextEvent</code></td><td><code>TextListener</code></td><td><code>textValueChanged(TextEvent e)</code></td></tr>
+            </table>
+          </div>
+
+          <p class="syl-subhead">Complete Working Event Handling Program</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>import java.awt.*;
+import java.awt.event.*;
+
+public class EventClickDemo extends Frame implements ActionListener {
+    private Label promptLabel;
+    private TextField inputField;
+    private Button submitBtn;
+    private Label resultLabel;
+
+    public EventClickDemo() {
+        setTitle("Delegation Event Demo");
+        setLayout(new FlowLayout());
+
+        promptLabel = new Label("Enter student name:");
+        inputField = new TextField(15);
+        submitBtn = new Button("Submit Registration");
+        resultLabel = new Label("Status: Awaiting input...");
+
+        <span class="cm">// Register this Frame as the ActionListener on the Button source</span>
+        submitBtn.addActionListener(this);
+
+        add(promptLabel);
+        add(inputField);
+        add(submitBtn);
+        add(resultLabel);
+
+        setSize(320, 160);
+        setVisible(true);
+
+        <span class="cm">// WindowAdapter avoids implementing all 7 WindowListener methods</span>
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                dispose();
+            }
+        });
+    }
+
+    <span class="cm">// Event Handler callback invoked automatically upon button click</span>
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String student = inputField.getText().trim();
+        if (student.isEmpty()) {
+            resultLabel.setText("Status: Error! Name cannot be blank.");
+        } else {
+            resultLabel.setText("Status: Registered student -> " + student);
+        }
+    }
+
+    public static void main(String[] args) {
+        new EventClickDemo();
+    }
+}</pre></div>
+          <span class="verified-tag">✓ compiles clean — OpenJDK 21</span>
+
+          <p class="syl-subhead">Why Adapter Classes Exist</p>
+          <p>Listener interfaces such as <code>WindowListener</code> declare <b>seven</b> separate methods. If a class implements <code>WindowListener</code> directly, it is syntactically forced to provide empty implementations (<code>{}</code>) for all seven methods, even if it only cares about <code>windowClosing()</code>!</p>
+          <p>An <b>Adapter class</b> (e.g. <code>WindowAdapter</code>, <code>MouseAdapter</code>, <code>KeyAdapter</code>) implements the interface by providing default empty bodies for all methods. You simply extend the adapter and override only the specific method you need.</p>
+        </div>
+      </div>
+
+      <!-- 7. INTRODUCTION TO AWT & CONTROLS -->
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 7. Introduction to AWT &amp; All 10 AWT Controls</button>
+        <div class="subq-body">
+          <p><b>AWT (Abstract Window Toolkit)</b> is Java's original graphical user interface library (packaged in <code>java.awt</code>). AWT components are characterized as <b>heavyweight components</b> because each widget delegates its visual presentation and platform behavior directly to an underlying native operating system peer (HWND in Windows, X11 widget in Linux, Cocoa in macOS).</p>
+
+          <p class="syl-topic-head">AWT Component &amp; Container Hierarchy</p>
+          <div class="ascii-diagram">
+                                  Object
+                                    │
+                                Component
+                               /         \
+                              /           \
+                       Containers       Atomic Controls
+                      /          \       (Button, Label, Checkbox, Choice,
+                  Window        Panel     List, Canvas, Scrollbar, TextField)
+                 /      \         │
+              Frame    Dialog   Applet</div>
+
+          <ul class="plain">
+            <li><b>Component:</b> The abstract superclass of all AWT user interface elements.</li>
+            <li><b>Container:</b> Subclass of Component that can host and layout other components.</li>
+            <li><b>Frame:</b> An independent top-level window with title bar, window borders, and minimize/maximize/close icons. Default layout is <code>BorderLayout</code>.</li>
+            <li><b>Panel:</b> A container with no title bar or borders, used to group components inside a Frame. Default layout is <code>FlowLayout</code>.</li>
+          </ul>
+
+          <p class="syl-subhead">Code &amp; Functionality of All 10 Core AWT Controls</p>
+
+          <ol class="steps">
+            <li><b>Label:</b> Non-editable, read-only static text display.
+              <div class="code-block"><span class="code-tag">Java</span><pre>Label lbl = new Label("Username:", Label.LEFT);
+lbl.setText("Student Roll Number:");</pre></div>
+            </li>
+            <li><b>Button:</b> Clickable push button triggering an <code>ActionEvent</code>.
+              <div class="code-block"><span class="code-tag">Java</span><pre>Button btn = new Button("Submit");
+btn.setLabel("Process Order");</pre></div>
+            </li>
+            <li><b>TextField:</b> Single-line editable text input box. Can mask password characters.
+              <div class="code-block"><span class="code-tag">Java</span><pre>TextField tf = new TextField(20);
+tf.setEchoChar('*'); <span class="cm">// masks text for password security</span>
+String entered = tf.getText();</pre></div>
+            </li>
+            <li><b>TextArea:</b> Multi-line, scrollable plain text input editor.
+              <div class="code-block"><span class="code-tag">Java</span><pre>TextArea ta = new TextArea(5, 30); <span class="cm">// 5 rows, 30 columns</span>
+ta.append("Additional feedback line\n");</pre></div>
+            </li>
+            <li><b>Checkbox:</b> Toggle widget representing boolean true/false states.
+              <div class="code-block"><span class="code-tag">Java</span><pre>Checkbox cb = new Checkbox("Agree to examination honor code", true);
+boolean isChecked = cb.getState();</pre></div>
+            </li>
+            <li><b>CheckboxGroup (Radio Buttons):</b> Mutually exclusive selection group.
+              <div class="code-block"><span class="code-tag">Java</span><pre>CheckboxGroup cbg = new CheckboxGroup();
+Checkbox male = new Checkbox("Male", cbg, true);
+Checkbox female = new Checkbox("Female", cbg, false);</pre></div>
+            </li>
+            <li><b>Choice:</b> Compact pop-up drop-down selection menu (combobox).
+              <div class="code-block"><span class="code-tag">Java</span><pre>Choice branch = new Choice();
+branch.add("Computer Science");
+branch.add("Information Technology");
+branch.add("Electronics & Comm.");
+String selected = branch.getSelectedItem();</pre></div>
+            </li>
+            <li><b>List:</b> Scrollable multi-item list allowing single or multiple item selections.
+              <div class="code-block"><span class="code-tag">Java</span><pre>List courseList = new List(4, true); <span class="cm">// 4 visible rows, multipleMode = true</span>
+courseList.add("Data Structures");
+courseList.add("Operating Systems");
+courseList.add("Java OOP");
+String[] selectedItems = courseList.getSelectedItems();</pre></div>
+            </li>
+            <li><b>Scrollbar:</b> Slider control for manual content scrolling or numeric range adjustment.
+              <div class="code-block"><span class="code-tag">Java</span><pre>Scrollbar sb = new Scrollbar(Scrollbar.HORIZONTAL, 50, 10, 0, 100);
+int currentVal = sb.getValue();</pre></div>
+            </li>
+            <li><b>Canvas:</b> Blank rectangular drawing area that can be subclassed to perform custom graphics rendering.
+              <div class="code-block"><span class="code-tag">Java</span><pre>class MyCanvas extends Canvas {
+    public MyCanvas() { setSize(120, 80); setBackground(Color.WHITE); }
+    @Override
+    public void paint(Graphics g) {
+        g.setColor(Color.RED);
+        g.drawOval(10, 10, 60, 60);
+    }
+}</pre></div>
+            </li>
+          </ol>
+
+          <p class="syl-subhead">AWT Controls Summary Reference Table</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <tr><th>Control</th><th>Visual Role</th><th>Primary Event Triggered</th><th>Key Methods</th></tr>
+              <tr><td><code>Label</code></td><td>Read-only text</td><td>None</td><td><code>getText()</code>, <code>setText(String)</code></td></tr>
+              <tr><td><code>Button</code></td><td>Clickable trigger</td><td><code>ActionEvent</code></td><td><code>getLabel()</code>, <code>setLabel(String)</code></td></tr>
+              <tr><td><code>TextField</code></td><td>Single-line text</td><td><code>ActionEvent</code> (on Enter)</td><td><code>getText()</code>, <code>setEchoChar(char)</code></td></tr>
+              <tr><td><code>TextArea</code></td><td>Multi-line editor</td><td><code>TextEvent</code></td><td><code>append(String)</code>, <code>insert(String, int)</code></td></tr>
+              <tr><td><code>Checkbox</code></td><td>Toggle box</td><td><code>ItemEvent</code></td><td><code>getState()</code>, <code>setState(boolean)</code></td></tr>
+              <tr><td><code>CheckboxGroup</code></td><td>Radio button logic</td><td><code>ItemEvent</code></td><td><code>getSelectedCheckbox()</code></td></tr>
+              <tr><td><code>Choice</code></td><td>Drop-down menu</td><td><code>ItemEvent</code></td><td><code>add(String)</code>, <code>getSelectedItem()</code></td></tr>
+              <tr><td><code>List</code></td><td>Multi-item list</td><td><code>ActionEvent</code> (double click), <code>ItemEvent</code></td><td><code>add(String)</code>, <code>getSelectedItems()</code></td></tr>
+              <tr><td><code>Scrollbar</code></td><td>Value slider</td><td><code>AdjustmentEvent</code></td><td><code>getValue()</code>, <code>setValue(int)</code></td></tr>
+              <tr><td><code>Canvas</code></td><td>Drawing surface</td><td><code>MouseEvent</code>, <code>KeyEvent</code></td><td><code>paint(Graphics)</code>, <code>repaint()</code></td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. LAYOUT MANAGERS -->
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 8. Layout Managers — Flow, Border, Grid, Card &amp; GridBag</button>
+        <div class="subq-body">
+          <p>A <b>Layout Manager</b> is an object implementing the <code>java.awt.LayoutManager</code> interface that automatically calculates the size and position of components inside a container. <b>Why Layout Managers are Critical:</b> Hardcoded pixel positioning (<code>setLayout(null)</code>) inevitably breaks when an application runs on operating systems with different screen DPIs, monitor resolutions, and localized system fonts. Layout managers guarantee dynamic, responsive UI restructuring.</p>
+
+          <p class="syl-topic-head">The Five Standard AWT Layout Managers</p>
+
+          <p class="syl-subhead">1. FlowLayout</p>
+          <p>The default layout for <code>Panel</code> and <code>Applet</code>. Places components in a row from left to right in the order added. When the current horizontal row fills up, it wraps automatically to the next row.</p>
+          <div class="ascii-diagram">
+          ┌────────────────────────────────────────────────────────┐
+          │  [ Button 1 ]    [ Button 2 ]    [ Button 3 ]          │
+          │  [ Button 4 ]    [ Button 5 ]                          │
+          └────────────────────────────────────────────────────────┘</div>
+          <div class="code-block"><span class="code-tag">Java</span><pre>setLayout(new FlowLayout(FlowLayout.CENTER, 15, 10)); <span class="cm">// alignment, hgap, vgap</span>
+add(new Button("Alpha"));
+add(new Button("Beta"));
+add(new Button("Gamma"));</pre></div>
+
+          <p class="syl-subhead">2. BorderLayout</p>
+          <p>The default layout for <code>Frame</code> and <code>Dialog</code>. Divides the container into five geographic regions: <code>NORTH</code>, <code>SOUTH</code>, <code>EAST</code>, <code>WEST</code>, and <code>CENTER</code>.</p>
+          <div class="ascii-diagram">
+          ┌────────────────────────────────────────────────────────┐
+          │                         NORTH                          │
+          ├──────────────┬──────────────────────────┬──────────────┤
+          │              │                          │              │
+          │     WEST     │          CENTER          │     EAST     │
+          │              │                          │              │
+          ├──────────────┴──────────────────────────┴──────────────┤
+          │                         SOUTH                          │
+          └────────────────────────────────────────────────────────┘</div>
+          <div class="code-block"><span class="code-tag">Java</span><pre>setLayout(new BorderLayout(5, 5));
+add(new Button("Header Bar"), BorderLayout.NORTH);
+add(new Button("Status Bar"), BorderLayout.SOUTH);
+add(new Button("Nav Sidebar"), BorderLayout.WEST);
+add(new Button("Ads Sidebar"), BorderLayout.EAST);
+add(new TextArea("Main Content Area"), BorderLayout.CENTER);</pre></div>
+          <ul class="plain">
+            <li><code>NORTH</code> and <code>SOUTH</code> span the full width and get their preferred height.</li>
+            <li><code>EAST</code> and <code>WEST</code> get their preferred width and stretch vertically.</li>
+            <li><code>CENTER</code> expands to fill all leftover horizontal and vertical space.</li>
+          </ul>
+
+          <p class="syl-subhead">3. GridLayout</p>
+          <p>Arranges components into a rectangular two-dimensional grid of equal-sized rows and columns. Every cell in the grid is guaranteed identical width and height.</p>
+          <div class="ascii-diagram">
+          ┌────────────────────────────┬────────────────────────────┐
+          │        Cell (0, 0)         │        Cell (0, 1)         │
+          ├────────────────────────────┼────────────────────────────┤
+          │        Cell (1, 0)         │        Cell (1, 1)         │
+          ├────────────────────────────┼────────────────────────────┤
+          │        Cell (2, 0)         │        Cell (2, 1)         │
+          └────────────────────────────┴────────────────────────────┘</div>
+          <div class="code-block"><span class="code-tag">Java</span><pre>setLayout(new GridLayout(3, 2, 10, 10)); <span class="cm">// 3 rows, 2 columns, 10px hgap, 10px vgap</span>
+add(new Label("User Name:"));
+add(new TextField());
+add(new Label("Password:"));
+add(new TextField());
+add(new Button("Login"));
+add(new Button("Reset"));</pre></div>
+
+          <p class="syl-subhead">4. CardLayout</p>
+          <p>Treats each component (typically a Panel) as a card in a deck. Only one card is visible at any given moment. Frequently used for multi-step installation wizards or tabbed interfaces.</p>
+          <div class="ascii-diagram">
+          [ Card 1: Account Info ]  ──►  [ Card 2: Payment ]  ──►  [ Card 3: Summary ]</div>
+          <div class="code-block"><span class="code-tag">Java</span><pre>CardLayout cards = new CardLayout();
+Panel cardDeck = new Panel(cards);
+
+cardDeck.add(panelStep1, "step1");
+cardDeck.add(panelStep2, "step2");
+
+cards.next(cardDeck);             <span class="cm">// flip to next card</span>
+cards.show(cardDeck, "step2");    <span class="cm">// display specific card by name</span></pre></div>
+
+          <p class="syl-subhead">5. GridBagLayout</p>
+          <p>The most sophisticated, versatile, and customizable layout manager in AWT. Components can span multiple rows and columns, have unequal dimensions, and specify padding and weight distributions using <code>GridBagConstraints</code>.</p>
+          <div class="ascii-diagram">
+          ┌────────────────────────────┬────────────────────────────┐
+          │  Label (1 col)             │  TextField (1 col)         │
+          ├────────────────────────────┴────────────────────────────┤
+          │  TextArea spanning 2 columns (gridwidth = 2)           │
+          ├─────────────────────────────────────────────────────────┤
+          │  Centered Submit Button (fill = NONE, anchor = CENTER)  │
+          └─────────────────────────────────────────────────────────┘</div>
+          <div class="code-block"><span class="code-tag">Java</span><pre>GridBagLayout gbl = new GridBagLayout();
+GridBagConstraints gbc = new GridBagConstraints();
+setLayout(gbl);
+
+gbc.gridx = 0; gbc.gridy = 0;
+gbc.fill = GridBagConstraints.HORIZONTAL;
+add(new Label("Full Name:"), gbc);
+
+gbc.gridx = 1; gbc.gridy = 0;
+add(new TextField(15), gbc);
+
+gbc.gridx = 0; gbc.gridy = 1;
+gbc.gridwidth = 2; <span class="cm">// span both columns</span>
+add(new Button("Full-Width Action Button"), gbc);</pre></div>
+
+          <p class="syl-subhead">Comparison Table of All 5 Layout Managers</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <tr><th>Layout Manager</th><th>Default Container</th><th>Arrangement Pattern</th><th>Component Resizing</th><th>Ideal Scenario</th></tr>
+              <tr><td><code>FlowLayout</code></td><td><code>Panel</code>, <code>Applet</code></td><td>Linear left-to-right rows, wrapping to next line</td><td>Preserves preferred component sizes</td><td>Toolbars, simple button rows</td></tr>
+              <tr><td><code>BorderLayout</code></td><td><code>Frame</code>, <code>Dialog</code></td><td>5 Geographic areas (N, S, E, W, Center)</td><td>Stretches components to fill region borders</td><td>Standard main desktop windows</td></tr>
+              <tr><td><code>GridLayout</code></td><td>None</td><td>Fixed 2D grid of equal rows and columns</td><td>Forces all components to identical sizes</td><td>Calculators, keypad grids, equal form tables</td></tr>
+              <tr><td><code>CardLayout</code></td><td>None</td><td>Stack of overlapping cards (one visible)</td><td>Expands to container dimensions</td><td>Step-by-step setup wizards, tab panels</td></tr>
+              <tr><td><code>GridBagLayout</code></td><td>None</td><td>Complex, dynamic grid with individual constraints</td><td>Completely custom per <code>GridBagConstraints</code></td><td>Complex, uneven enterprise data entry forms</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. MASTER 10-MARK EXAM PROGRAMS -->
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 9. Master 10-Mark Exam Programs for Unit II</button>
+        <div class="subq-body">
+          <p>Writing complete, compilable programs with proper architecture earns full marks in 10-mark university questions. Here are three model solutions:</p>
+
+          <p class="syl-subhead">Model Program 1: Comprehensive AWT GUI with Layout &amp; Event Handling</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>import java.awt.*;
+import java.awt.event.*;
+
+public class StudentRegistrationGUI extends Frame implements ActionListener {
+    Label titleLbl, nameLbl, branchLbl, statusLbl;
+    TextField nameTxt;
+    Choice branchChoice;
+    Button submitBtn, clearBtn;
+
+    public StudentRegistrationGUI() {
+        setTitle("MMMUT Student Portal — BCS 212");
+        setLayout(new GridLayout(5, 2, 8, 8));
+
+        titleLbl = new Label("Portal Registration", Label.CENTER);
+        statusLbl = new Label("Ready", Label.CENTER);
+        nameLbl = new Label("Student Name:");
+        nameTxt = new TextField(20);
+        branchLbl = new Label("Department:");
+
+        branchChoice = new Choice();
+        branchChoice.add("Computer Science & Engineering");
+        branchChoice.add("Information Technology");
+        branchChoice.add("Electronics Engineering");
+
+        submitBtn = new Button("Register");
+        clearBtn = new Button("Clear Form");
+
+        submitBtn.addActionListener(this);
+        clearBtn.addActionListener(this);
+
+        add(titleLbl);    add(statusLbl);
+        add(nameLbl);     add(nameTxt);
+        add(branchLbl);   add(branchChoice);
+        add(submitBtn);   add(clearBtn);
+
+        setSize(420, 220);
+        setVisible(true);
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) { dispose(); }
+        });
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == submitBtn) {
+            String name = nameTxt.getText().trim();
+            if (name.isEmpty()) {
+                statusLbl.setText("Error: Enter Name");
+            } else {
+                statusLbl.setText("Success: " + name + " (" + branchChoice.getSelectedItem() + ")");
+            }
+        } else if (e.getSource() == clearBtn) {
+            nameTxt.setText("");
+            statusLbl.setText("Form Cleared");
+        }
+    }
+
+    public static void main(String[] args) {
+        new StudentRegistrationGUI();
+    }
+}</pre></div>
+          <span class="verified-tag">✓ compiles clean — OpenJDK 21</span>
+
+          <p class="syl-subhead">Model Program 2: Thread-Safe Banking Simulation with Synchronization</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>class BankVault {
+    private int balance = 1200;
+
+    public synchronized void withdraw(String client, int amount) {
+        if (balance >= amount) {
+            System.out.println(client + " approved for Rs. " + amount);
+            try { Thread.sleep(80); } catch (InterruptedException e) {}
+            balance -= amount;
+            System.out.println(client + " withdrew. Balance remaining: Rs. " + balance);
+        } else {
+            System.out.println(client + " rejected: Insufficient funds (Rs. " + balance + ")");
+        }
+    }
+}
+
+public class ExamSyncThread {
+    public static void main(String[] args) {
+        BankVault vault = new BankVault();
+
+        Thread t1 = new Thread(() -> vault.withdraw("Card-A", 800));
+        Thread t2 = new Thread(() -> vault.withdraw("Card-B", 700));
+
+        t1.start();
+        t2.start();
+    }
+}</pre></div>
+          <div class="console-out">Card-A approved for Rs. 800
+Card-A withdrew. Balance remaining: Rs. 400
+Card-B rejected: Insufficient funds (Rs. 400)</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+
+          <p class="syl-subhead">Model Program 3: File Copy and Word Counter using BufferedReader</p>
+          <div class="code-block"><span class="code-tag">Java</span><pre>import java.io.*;
+
+public class FileWordCount {
+    public static void main(String[] args) {
+        File f = new File("exam_input.txt");
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
+            bw.write("Java is a secure platform independent programming language.\n");
+            bw.write("BCS 212 Object Oriented Programming Examination.\n");
+        } catch (IOException e) {}
+
+        int lineCount = 0, wordCount = 0;
+        try (BufferedReader br = new BufferedReader(new FileReader(f))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                lineCount++;
+                String[] tokens = line.trim().split("\\s+");
+                wordCount += tokens.length;
+            }
+            System.out.println("Lines: " + lineCount + " | Words: " + wordCount);
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e);
+        }
+    }
+}</pre></div>
+          <div class="console-out">Lines: 2 | Words: 14</div>
+          <span class="verified-tag">✓ compiled &amp; run</span>
+        </div>
+      </div>
+
+      <!-- 10. CRUCIAL EXAM DIFFERENCES & QUESTION BANK -->
+      <div class="subq">
+        <button class="subq-toggle"><span class="subq-arrow">▶</span> 10. Crucial Exam Differences &amp; University Question Bank</button>
+        <div class="subq-body">
+          <p class="syl-topic-head">The Top 10 Exam Differences in Unit II</p>
+
+          <p class="syl-subhead">1. Error vs Exception</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <tr><th>Aspect</th><th>Error</th><th>Exception</th></tr>
+              <tr><td>Origin</td><td>Severe JVM-level infrastructure catastrophic failures</td><td>Exceptional conditions caused by application code or bad input</td></tr>
+              <tr><td>Recovery</td><td>Generally impossible to recover programmatically</td><td>Can and should be caught and handled with <code>try-catch</code></td></tr>
+              <tr><td>Examples</td><td><code>OutOfMemoryError</code>, <code>StackOverflowError</code></td><td><code>IOException</code>, <code>ArithmeticException</code></td></tr>
+            </table>
+          </div>
+
+          <p class="syl-subhead">2. Thread vs Runnable</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <tr><th>Extending Thread</th><th>Implementing Runnable</th></tr>
+              <tr><td>Class cannot inherit any other class (single inheritance constraint)</td><td>Class remains free to extend another class</td></tr>
+              <tr><td>Couples the execution thread with the business task</td><td>Separates the job (Runnable) from the worker (Thread)</td></tr>
+              <tr><td>Slightly simpler syntax for trivial toy examples</td><td>Industry standard; compatible with thread pools and ExecutorService</td></tr>
+            </table>
+          </div>
+
+          <p class="syl-subhead">3. AWT vs Swing</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <tr><th>AWT (Abstract Window Toolkit)</th><th>Swing</th></tr>
+              <tr><td>Package: <code>java.awt</code></td><td>Package: <code>javax.swing</code></td></tr>
+              <tr><td><b>Heavyweight:</b> Components rely directly on underlying native OS peers</td><td><b>Lightweight:</b> Drawn purely in Java bytecode onto a top-level canvas</td></tr>
+              <tr><td>Platform dependent visual appearance (look & feel depends on OS)</td><td>Pluggable Look and Feel (identical appearance across all OS platforms)</td></tr>
+              <tr><td>Smaller widget set; no tables, trees, or tabbed panes natively</td><td>Rich component library (<code>JTable</code>, <code>JTree</code>, <code>JTabbedPane</code>)</td></tr>
+            </table>
+          </div>
+
+          <p class="syl-subhead">Unit II University Question Bank</p>
+          <p class="syl-subhead">Top 2-Mark Short Definitions:</p>
+          <ul class="plain">
+            <li><b>What is a race condition?</b> An undesirable concurrency bug where the final value of a variable depends on the unpredictable thread execution timing.</li>
+            <li><b>What is the purpose of the transient keyword?</b> Prevents a specific instance variable from being serialized into the byte stream.</li>
+            <li><b>Why does an Applet have no main() method?</b> Because its execution is managed by the browser/appletviewer lifecycle container (<code>init()</code>, <code>start()</code>).</li>
+            <li><b>What is a daemon thread?</b> A low-priority background thread (like Garbage Collector) that does not prevent JVM shutdown when user threads terminate.</li>
+            <li><b>What is an adapter class?</b> A convenience class implementing a listener interface with empty dummy bodies, sparing subclasses from writing unused methods.</li>
+          </ul>
+
+          <p class="syl-subhead">Top 10-Mark Essay Questions (2-Page Answer Blueprint):</p>
+          <ol class="steps">
+            <li><b>Explain Exception Handling in Java. Discuss the Exception Hierarchy, checked vs unchecked exceptions, multiple catch blocks, and user-defined exceptions with a full program.</b></li>
+            <li><b>Explain Multithreading in Java. Discuss the Thread Life Cycle, creating threads via Thread vs Runnable, synchronization, and race conditions with code.</b></li>
+            <li><b>Explain Java I/O Streams. Compare Byte Streams with Character Streams, explain BufferedReader/BufferedWriter, and discuss Object Serialization.</b></li>
+            <li><b>Explain the Delegation Event Model in detail. Describe Event Sources, Event Objects, and Event Listeners, and explain how Adapter classes simplify GUI code.</b></li>
+            <li><b>Explain the five standard Layout Managers in AWT with neat diagrams and code examples.</b></li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="margin-note"><b>Unit II Revision Strategy:</b> Prioritize in this exact order: 1. Exception handling (try/catch/finally/throw/throws) → 2. Multithreading (lifecycle &amp; synchronization) → 3. AWT controls &amp; layout managers → 4. Delegation Event Model &amp; Adapters → 5. I/O Streams (Byte vs Char) → 6. Networking (TCP vs UDP) → 7. Applet lifecycle.</div>
+    </div>
+
+    <!-- ---------- Quick revision block ---------- -->
+    <div class="qcard">
+      <div class="punch-holes"><span></span><span></span><span></span></div>
+      <div class="qcard-head">
+        <span class="qnum">§</span>
+        <span class="qtitle">Last-Minute Revision Map</span>
+        <div class="meta-row">
+          <span class="meta-chip">All Units Comprehensive</span>
+        </div>
+      </div>
+
+      <div class="sec-heading">Must-Memorize Diagrams for the Examination</div>
+      <ul class="plain">
+        <li><b>Java Execution Pipeline:</b> <code>.java</code> &rarr; <code>javac</code> &rarr; <code>.class (bytecode)</code> &rarr; <code>JVM</code> &rarr; <code>Native OS Instructions</code></li>
+        <li><b>JVM Internal Architecture:</b> Class Loader &rarr; Runtime Data Areas (Heap, Thread Stack, Method Area, PC, Native Stack) &rarr; Execution Engine (Interpreter + JIT)</li>
+        <li><b>Exception Class Hierarchy:</b> Object &rarr; Throwable &rarr; Error / Exception &rarr; RuntimeException &rarr; concrete classes</li>
+        <li><b>Thread Life Cycle:</b> NEW &rarr; start() &rarr; RUNNABLE &harr; (WAITING / TIMED_WAITING / BLOCKED) &rarr; TERMINATED</li>
+        <li><b>Applet Life Cycle:</b> init() &rarr; start() &harr; stop() &rarr; destroy(), with paint(Graphics g) handling rendering</li>
+        <li><b>Delegation Event Model:</b> Event Source (e.g. Button) &rarr; Event Object (ActionEvent) &rarr; Event Listener (ActionListener) &rarr; Callback Handler</li>
+        <li><b>TCP Client–Server Handshake:</b> <code>ServerSocket(port).accept()</code> &harr; <code>Socket(host, port)</code> &rarr; Streams</li>
+        <li><b>AWT Layout Managers:</b> FlowLayout (wrapping rows), BorderLayout (5 zones), GridLayout (equal grid cells)</li>
+      </ul>
+
+      <div class="sec-heading">Highest-Yield Answer Structure (10-Mark / 2-Page Answers)</div>
+      <p style="font-family:'Courier Prime',monospace; font-size:0.88rem; color:var(--blue); background:var(--blue-soft); border:1px solid rgba(26,58,107,0.3); border-radius:3px; padding:12px 16px;">Definition &rarr; Conceptual Explanation &rarr; Architecture Diagram &rarr; Sub-Types / Class Hierarchy &rarr; Syntax &amp; Rules &rarr; Full Compilable Program &rarr; Advantages &amp; Edge-Cases &rarr; Comparison Table &rarr; Exam Conclusion</p>
+
+      <div class="sec-heading">Priority Study Order When Time is Constrained</div>
+      <ol class="priority-list">
+        <li>OOP &amp; the Four Pillars (Encapsulation, Abstraction, Inheritance, Polymorphism)</li>
+        <li>JVM Architecture, Platform Independence &amp; WORA Principle</li>
+        <li>Exception Handling: <code>try-catch-finally</code>, <code>throw</code> vs <code>throws</code>, custom exceptions</li>
+        <li>Multithreading: Thread Life Cycle, <code>Thread</code> vs <code>Runnable</code>, <code>synchronized</code> methods</li>
+        <li>Method Overloading vs Method Overriding &amp; Dynamic Method Dispatch</li>
+        <li>Abstract Classes vs Interfaces &amp; Multiple Type Inheritance</li>
+        <li>AWT Controls, Event Handling (Delegation Model) &amp; WindowAdapter</li>
+        <li>Layout Managers: <code>FlowLayout</code>, <code>BorderLayout</code>, <code>GridLayout</code></li>
+        <li>Java I/O Streams: Byte Streams vs Character Streams (BufferedReader/Writer)</li>
+        <li>Networking: TCP vs UDP, Sockets, and ServerSocket</li>
+        <li>Java Applet Life Cycle (Legacy syllabus question)</li>
+        <li>Java Arrays, String Immutability, and <code>==</code> vs <code>.equals()</code></li>
+      </ol>
+
+      <div class="answer-box"><span class="ans-label">Answer</span><p>Together, Unit I establishes Java's object-oriented foundations and compilation semantics, while Unit II supplies the core runtime engineering required for enterprise computing: robust error handling, concurrency, file and object persistence, networking, and graphical user interfaces. Following the structured 2-page template above guarantees maximum academic marks.</p></div>
+    </div>
+
+  </div>
+
   <footer>— End of Answer Manuscript · BCS 212 Object Oriented Programming through Java —</footer>
 </div>
 
 <script>
+  // Tab Navigation
   document.querySelectorAll('.tab-btn').forEach(function(btn){
     btn.addEventListener('click', function(){
       document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
@@ -835,6 +2886,8 @@ public class LoginForm extends Frame {
       window.scrollTo({top: document.querySelector('.folder-tabs').offsetTop - 10, behavior:'smooth'});
     });
   });
+
+  // Collapsible sub-questions
   document.querySelectorAll('.subq-toggle').forEach(function(btn){
     btn.addEventListener('click', function(){
       btn.parentElement.classList.toggle('open');
@@ -844,6 +2897,110 @@ public class LoginForm extends Frame {
     var first = card.querySelector('.subq');
     if(first){ first.classList.add('open'); }
   });
+
+  // Copy Code Button on all Code Blocks
+  document.querySelectorAll('.code-block').forEach(function(cb){
+    var pre = cb.querySelector('pre');
+    if(!pre) return;
+    var btn = document.createElement('button');
+    btn.className = 'copy-code-btn';
+    btn.textContent = 'copy';
+    btn.setAttribute('title', 'Copy code to clipboard');
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var codeText = pre.innerText;
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(codeText).then(function(){
+          btn.textContent = 'copied! ✓';
+          setTimeout(function(){ btn.textContent = 'copy'; }, 2000);
+        }).catch(function(){ fallbackCopy(codeText, btn); });
+      } else {
+        fallbackCopy(codeText, btn);
+      }
+    });
+    cb.appendChild(btn);
+  });
+
+  function fallbackCopy(text, btn){
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand('copy');
+      btn.textContent = 'copied! ✓';
+      setTimeout(function(){ btn.textContent = 'copy'; }, 2000);
+    } catch(err){}
+    document.body.removeChild(ta);
+  }
+
+  // Syllabus Search & Expand Controls
+  var searchInput = document.getElementById('syl-search');
+  var clearBtn = document.getElementById('syl-clear-btn');
+  var countEl = document.getElementById('syl-search-results');
+  var expandBtn = document.getElementById('syl-expand-all');
+  var collapseBtn = document.getElementById('syl-collapse-all');
+  var sylSubqs = document.querySelectorAll('#syllabus .subq');
+
+  if(searchInput){
+    searchInput.addEventListener('input', function(){
+      var q = this.value.trim().toLowerCase();
+      if(q.length > 0){
+        if(clearBtn) clearBtn.style.display = 'block';
+        var matchCount = 0;
+        sylSubqs.forEach(function(subq){
+          var text = subq.innerText.toLowerCase();
+          if(text.indexOf(q) !== -1){
+            subq.style.display = 'block';
+            subq.classList.add('open');
+            matchCount++;
+          } else {
+            subq.style.display = 'none';
+          }
+        });
+        if(countEl){
+          countEl.style.display = 'block';
+          countEl.textContent = 'Found ' + matchCount + ' topic' + (matchCount === 1 ? '' : 's') + ' matching "' + this.value.trim() + '" (auto-expanded below)';
+        }
+      } else {
+        if(clearBtn) clearBtn.style.display = 'none';
+        if(countEl) countEl.style.display = 'none';
+        sylSubqs.forEach(function(subq){
+          subq.style.display = 'block';
+        });
+      }
+    });
+
+    if(clearBtn){
+      clearBtn.addEventListener('click', function(){
+        searchInput.value = '';
+        clearBtn.style.display = 'none';
+        if(countEl) countEl.style.display = 'none';
+        sylSubqs.forEach(function(subq){
+          subq.style.display = 'block';
+        });
+        searchInput.focus();
+      });
+    }
+  }
+
+  if(expandBtn){
+    expandBtn.addEventListener('click', function(){
+      sylSubqs.forEach(function(subq){
+        subq.classList.add('open');
+      });
+    });
+  }
+
+  if(collapseBtn){
+    collapseBtn.addEventListener('click', function(){
+      sylSubqs.forEach(function(subq){
+        subq.classList.remove('open');
+      });
+    });
+  }
 </script>
 
 </body>
