@@ -1,0 +1,24 @@
+{
+  "name": "BCS 212 · OOP through Java — Minor Test Solution Manuscript",
+  "short_name": "BCS 212 PYQ",
+  "icons": [
+    {
+      "src": "./favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "./favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "./apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#8B1A1A",
+  "background_color": "#dcca9b",
+  "display": "standalone"
+}
